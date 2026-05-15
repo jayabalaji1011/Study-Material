@@ -3,108 +3,348 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>PySQL Master — Python & SQL Interview Prep</title>
-<link href="https://fonts.googleapis.com/css2?family=Space+Mono:ital,wght@0,400;0,700;1,400&family=Syne:wght@400;600;700;800&family=JetBrains+Mono:wght@300;400;600&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="style.css">
+<title>Zoho Interview Prep</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=JetBrains+Mono:wght@400;500&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,400&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0a0e1a;
+    --surface: #111827;
+    --surface2: #1a2234;
+    --border: #1e2d45;
+    --accent: #00d4ff;
+    --accent2: #7c3aed;
+    --accent3: #10b981;
+    --accent4: #f59e0b;
+    --accent5: #ef4444;
+    --text: #e2e8f0;
+    --muted: #64748b;
+    --code-bg: #0d1117;
+  }
+  * { margin:0; padding:0; box-sizing:border-box; }
+  body { font-family:'DM Sans',sans-serif; background:var(--bg); color:var(--text); min-height:100vh; }
+
+  /* HEADER */
+  .header {
+    background: linear-gradient(135deg, #0a0e1a 0%, #111827 50%, #0d1b2a 100%);
+    border-bottom: 1px solid var(--border);
+    padding: 28px 32px 20px;
+    position: sticky; top:0; z-index:100;
+    backdrop-filter: blur(12px);
+  }
+  .header-top { display:flex; align-items:center; gap:16px; margin-bottom:20px; }
+  .logo { font-family:'Syne',sans-serif; font-size:22px; font-weight:800; }
+  .logo span { color:var(--accent); }
+  .badge { background: linear-gradient(135deg,#7c3aed,#00d4ff); color:#fff; font-size:11px; font-weight:600; padding:3px 10px; border-radius:20px; letter-spacing:1px; }
+
+  /* TABS */
+  .tabs { display:flex; gap:6px; flex-wrap:wrap; }
+  .tab {
+    font-family:'Syne',sans-serif; font-size:13px; font-weight:600;
+    padding:8px 18px; border-radius:8px; cursor:pointer; border:1px solid var(--border);
+    background:transparent; color:var(--muted); transition:all 0.2s; letter-spacing:0.3px;
+  }
+  .tab:hover { border-color:var(--accent); color:var(--accent); }
+  .tab.active { color:#fff; border-color:transparent; }
+  .tab[data-tab="python"].active { background: linear-gradient(135deg,#3b82f6,#1d4ed8); }
+  .tab[data-tab="sql"].active { background: linear-gradient(135deg,#10b981,#047857); }
+  .tab[data-tab="oops"].active { background: linear-gradient(135deg,#f59e0b,#d97706); }
+  .tab[data-tab="hr"].active { background: linear-gradient(135deg,#ec4899,#be185d); }
+  .tab[data-tab="zoho"].active { background: linear-gradient(135deg,#7c3aed,#5b21b6); }
+
+  /* MAIN */
+  .main { max-width:1100px; margin:0 auto; padding:32px 24px; }
+  .section { display:none; }
+  .section.active { display:block; animation: fadeUp 0.35s ease; }
+  @keyframes fadeUp { from { opacity:0; transform:translateY(14px); } to { opacity:1; transform:translateY(0); } }
+
+  .section-title {
+    font-family:'Syne',sans-serif; font-size:28px; font-weight:800;
+    margin-bottom:8px; display:flex; align-items:center; gap:12px;
+  }
+  .section-sub { color:var(--muted); margin-bottom:32px; font-size:15px; }
+
+  /* TOPIC CARDS */
+  .topics-grid { display:grid; gap:20px; }
+  .topic-card {
+    background:var(--surface); border:1px solid var(--border);
+    border-radius:14px; overflow:hidden; transition:border-color 0.2s;
+  }
+  .topic-card:hover { border-color:var(--accent); }
+
+  .topic-header {
+    display:flex; align-items:center; justify-content:space-between;
+    padding:18px 22px; cursor:pointer; user-select:none;
+  }
+  .topic-header-left { display:flex; align-items:center; gap:14px; }
+  .topic-num {
+    width:32px; height:32px; border-radius:8px; display:flex; align-items:center;
+    justify-content:center; font-family:'Syne',sans-serif; font-weight:700; font-size:13px;
+    flex-shrink:0;
+  }
+  .topic-name { font-family:'Syne',sans-serif; font-weight:700; font-size:16px; }
+  .topic-tag { font-size:11px; color:var(--muted); background:var(--surface2); padding:2px 8px; border-radius:4px; }
+  .chevron { color:var(--muted); transition:transform 0.25s; font-size:18px; }
+  .topic-card.open .chevron { transform:rotate(180deg); }
+
+  .topic-body { display:none; border-top:1px solid var(--border); }
+  .topic-card.open .topic-body { display:block; }
+
+  /* INNER TABS */
+  .inner-tabs { display:flex; border-bottom:1px solid var(--border); background:var(--surface2); }
+  .inner-tab {
+    flex:1; text-align:center; padding:12px 8px; font-size:12px; font-weight:600;
+    cursor:pointer; color:var(--muted); border-bottom:2px solid transparent;
+    transition:all 0.2s; font-family:'Syne',sans-serif; letter-spacing:0.3px;
+  }
+  .inner-tab.active { color:var(--accent); border-bottom-color:var(--accent); background:transparent; }
+
+  .inner-panel { display:none; padding:22px; }
+  .inner-panel.active { display:block; }
+
+  /* EXPLANATION BOX */
+  .explain-box {
+    background:var(--surface2); border-left:3px solid var(--accent);
+    border-radius:0 10px 10px 0; padding:16px 20px; margin-bottom:16px;
+    line-height:1.75; font-size:14.5px;
+  }
+  .explain-box.green { border-left-color:var(--accent3); }
+  .explain-box.yellow { border-left-color:var(--accent4); }
+  .explain-box.purple { border-left-color:var(--accent2); }
+
+  /* DEF BOX */
+  .def-box {
+    background: linear-gradient(135deg, rgba(0,212,255,0.06), rgba(124,58,237,0.06));
+    border:1px solid rgba(0,212,255,0.2); border-radius:10px;
+    padding:14px 18px; margin-bottom:16px; font-size:14px; line-height:1.7;
+  }
+  .def-label {
+    font-family:'Syne',sans-serif; font-size:11px; font-weight:700;
+    color:var(--accent); text-transform:uppercase; letter-spacing:1px; margin-bottom:6px;
+  }
+
+  /* CODE */
+  pre {
+    background:var(--code-bg); border:1px solid var(--border);
+    border-radius:10px; padding:16px 18px; overflow-x:auto;
+    font-family:'JetBrains Mono',monospace; font-size:13px; line-height:1.7;
+    margin-bottom:14px; position:relative;
+  }
+  .code-label {
+    font-family:'JetBrains Mono',monospace; font-size:10px;
+    background:var(--accent); color:#000; font-weight:700;
+    padding:2px 8px; border-radius:3px; display:inline-block; margin-bottom:8px;
+  }
+  .kw { color:#ff7b72; }
+  .fn { color:#d2a8ff; }
+  .str { color:#a5f3fc; }
+  .cm { color:#6e7681; font-style:italic; }
+  .num { color:#f59e0b; }
+  .cls { color:#ffa657; }
+
+  /* QNA */
+  .qna-item { margin-bottom:20px; border:1px solid var(--border); border-radius:10px; overflow:hidden; }
+  .qna-q {
+    background:var(--surface2); padding:14px 18px;
+    font-weight:600; font-size:14px; display:flex; gap:10px; align-items:flex-start;
+  }
+  .q-badge {
+    background:var(--accent); color:#000; font-family:'Syne',sans-serif;
+    font-size:11px; font-weight:800; padding:2px 7px; border-radius:4px; flex-shrink:0; margin-top:1px;
+  }
+  .qna-a { padding:14px 18px; font-size:14px; line-height:1.75; color:#cbd5e1; }
+  .qna-a strong { color:var(--text); }
+
+  /* HR SECTION */
+  .hr-card { background:var(--surface); border:1px solid var(--border); border-radius:12px; margin-bottom:18px; overflow:hidden; }
+  .hr-q { background:linear-gradient(135deg,rgba(236,72,153,0.1),rgba(190,24,93,0.05)); padding:16px 20px; font-weight:600; font-size:15px; border-bottom:1px solid var(--border); display:flex; gap:10px; }
+  .hr-badge { background:#ec4899; color:#fff; font-size:11px; font-weight:700; padding:2px 8px; border-radius:4px; flex-shrink:0; }
+  .hr-a { padding:16px 20px; font-size:14px; line-height:1.8; color:#cbd5e1; }
+  .tip-box { background:rgba(16,185,129,0.08); border:1px solid rgba(16,185,129,0.2); border-radius:8px; padding:10px 14px; margin-top:10px; font-size:13px; }
+  .tip-label { color:var(--accent3); font-weight:700; font-size:11px; letter-spacing:0.5px; }
+
+  /* ZOHO PRODUCTS */
+  .products-grid { display:grid; grid-template-columns: repeat(auto-fill, minmax(280px,1fr)); gap:16px; margin-bottom:28px; }
+  .product-pill {
+    background:var(--surface); border:1px solid var(--border);
+    border-radius:12px; padding:16px 18px; cursor:pointer;
+    transition:all 0.2s; display:flex; align-items:center; gap:14px;
+  }
+  .product-pill:hover, .product-pill.selected { border-color:var(--accent2); background:rgba(124,58,237,0.08); }
+  .product-icon { font-size:26px; width:42px; height:42px; display:flex; align-items:center; justify-content:center; background:var(--surface2); border-radius:10px; }
+  .product-info { flex:1; }
+  .product-name { font-family:'Syne',sans-serif; font-weight:700; font-size:15px; }
+  .product-cat { font-size:11px; color:var(--muted); margin-top:2px; }
+
+  .zoho-detail { display:none; }
+  .zoho-detail.active { display:block; animation: fadeUp 0.3s ease; }
+
+  .zoho-hero {
+    background: linear-gradient(135deg, rgba(124,58,237,0.15), rgba(0,212,255,0.08));
+    border:1px solid rgba(124,58,237,0.3); border-radius:14px;
+    padding:24px 28px; margin-bottom:24px;
+    display:flex; align-items:center; gap:20px;
+  }
+  .zoho-hero-icon { font-size:48px; }
+  .zoho-hero-title { font-family:'Syne',sans-serif; font-size:24px; font-weight:800; }
+  .zoho-hero-sub { color:var(--muted); font-size:14px; margin-top:4px; }
+
+  .feature-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(200px,1fr)); gap:12px; margin:16px 0; }
+  .feature-chip { background:var(--surface2); border:1px solid var(--border); border-radius:8px; padding:10px 14px; font-size:13px; display:flex; gap:8px; align-items:center; }
+  .feature-chip span { font-size:16px; }
+
+  .level-badge { display:inline-block; font-size:11px; font-weight:700; padding:3px 10px; border-radius:20px; margin-right:6px; margin-bottom:8px; }
+  .l-basic { background:rgba(16,185,129,0.15); color:var(--accent3); border:1px solid rgba(16,185,129,0.3); }
+  .l-mid { background:rgba(245,158,11,0.15); color:var(--accent4); border:1px solid rgba(245,158,11,0.3); }
+  .l-deep { background:rgba(239,68,68,0.15); color:var(--accent5); border:1px solid rgba(239,68,68,0.3); }
+
+  h4 { font-family:'Syne',sans-serif; font-weight:700; font-size:15px; margin:20px 0 10px; color:var(--accent); }
+  h5 { font-family:'Syne',sans-serif; font-weight:700; font-size:13px; margin:14px 0 8px; color:var(--accent4); }
+  ul { padding-left:18px; }
+  li { font-size:14px; line-height:1.75; color:#cbd5e1; margin-bottom:4px; }
+  strong { color:#e2e8f0; }
+
+  .back-btn { background:var(--surface2); border:1px solid var(--border); color:var(--text); padding:8px 16px; border-radius:8px; cursor:pointer; font-family:'Syne',sans-serif; font-weight:600; font-size:13px; margin-bottom:20px; display:inline-flex; align-items:center; gap:6px; }
+  .back-btn:hover { border-color:var(--accent); color:var(--accent); }
+
+  .progress-bar { height:3px; background:var(--border); border-radius:2px; margin-bottom:28px; }
+  .progress-fill { height:100%; border-radius:2px; background:linear-gradient(90deg,var(--accent),var(--accent2)); width:0; transition:width 0.5s; }
+
+  @media(max-width:600px) {
+    .header { padding:18px 16px 14px; }
+    .main { padding:20px 14px; }
+    .tab { padding:6px 12px; font-size:12px; }
+    .products-grid { grid-template-columns:1fr; }
+    .feature-grid { grid-template-columns:1fr 1fr; }
+  }
+</style>
 </head>
 <body>
 
-<!-- SIDEBAR NAV -->
-<aside class="sidebar" id="sidebar">
-  <div class="sidebar-header">
-    <div class="logo">
-      <span class="logo-icon">⚡</span>
-      <span class="logo-text">PySQL<em>Master</em></span>
-    </div>
-    <button class="sidebar-close" id="sidebarClose">✕</button>
+<div class="header">
+  <div class="header-top">
+    <div class="logo">Zoho <span>Interview</span> Prep</div>
+    <div class="badge">5-IN-1 GUIDE</div>
   </div>
-
-  <div class="search-box">
-    <input type="text" id="searchInput" placeholder="Search topics..." autocomplete="off">
-    <span class="search-icon">⌕</span>
+  <div class="tabs">
+    <button class="tab active" data-tab="python">🐍 Python</button>
+    <button class="tab" data-tab="sql">🗄️ SQL</button>
+    <button class="tab" data-tab="oops">🧱 OOP</button>
+    <button class="tab" data-tab="hr">🤝 HR Round</button>
+    <button class="tab" data-tab="zoho">🏢 Zoho Products</button>
   </div>
+</div>
 
-  <div class="nav-section">
-    <div class="nav-lang-tabs">
-      <button class="lang-tab active" data-lang="python">🐍 Python</button>
-      <button class="lang-tab" data-lang="sql">🗄️ SQL</button>
-    </div>
+<div class="main">
+
+<!-- ==================== PYTHON ==================== -->
+<div class="section active" id="python">
+  <div class="section-title">🐍 Python <span style="color:var(--accent);font-size:18px;font-weight:400">Fundamentals</span></div>
+  <div class="section-sub">Core topics with explanation, definition, example programs & interview Q&A</div>
+  <div class="topics-grid" id="python-topics"></div>
+</div>
+
+<!-- ==================== SQL ==================== -->
+<div class="section" id="sql">
+  <div class="section-title">🗄️ SQL <span style="color:var(--accent3);font-size:18px;font-weight:400">Essentials</span></div>
+  <div class="section-sub">Topic explanations, definitions, queries, and interview-style Q&A</div>
+  <div class="topics-grid" id="sql-topics"></div>
+</div>
+
+<!-- ==================== OOPS ==================== -->
+<div class="section" id="oops">
+  <div class="section-title">🧱 Object-Oriented <span style="color:var(--accent4);font-size:18px;font-weight:400">Programming</span></div>
+  <div class="section-sub">OOP concepts with real examples and interview answers</div>
+  <div class="topics-grid" id="oops-topics"></div>
+</div>
+
+<!-- ==================== HR ==================== -->
+<div class="section" id="hr">
+  <div class="section-title">🤝 HR Round <span style="color:#ec4899;font-size:18px;font-weight:400">Preparation</span></div>
+  <div class="section-sub">Personal questions + Discussion topics with ideal interview-style answers</div>
+  <div id="hr-content"></div>
+</div>
+
+<!-- ==================== ZOHO ==================== -->
+<div class="section" id="zoho">
+  <div class="section-title">🏢 Zoho <span style="color:var(--accent2);font-size:18px;font-weight:400">Products</span></div>
+  <div class="section-sub">Deep dive into Zoho's product suite — from basics to advanced, with interview Q&A</div>
+  <div id="zoho-list">
+    <div style="margin-bottom:12px;font-family:'Syne',sans-serif;font-weight:700;font-size:13px;color:var(--accent);text-transform:uppercase;letter-spacing:1px;">🎯 Your Main Task Products</div>
+    <div class="products-grid" id="main-products"></div>
+    <div style="margin-bottom:12px;margin-top:24px;font-family:'Syne',sans-serif;font-weight:700;font-size:13px;color:var(--muted);text-transform:uppercase;letter-spacing:1px;">📦 Extra Zoho Products</div>
+    <div class="products-grid" id="extra-products"></div>
   </div>
+  <div id="zoho-detail-area"></div>
+</div>
 
-  <nav class="topic-nav" id="topicNav"></nav>
-</aside>
+</div><!-- /main -->
 
-<!-- OVERLAY -->
-<div class="overlay" id="overlay"></div>
+<script>
+// ================================================================
+// DATA
+// ================================================================
 
-<!-- MAIN -->
-<main class="main" id="main">
+const pythonTopics = [
+  {
+    name:"Variables & Data Types",tag:"Basics",color:"#3b82f6",
+    explain:`Python is a dynamically typed language. You don't need to declare the type of a variable — Python figures it out automatically at runtime.
+Variables are just names pointing to objects in memory. Python has built-in data types like <strong>int, float, str, bool, list, tuple, dict, set</strong>.`,
+    def:`A variable is a named reference to a value stored in memory. Data type defines what kind of value it holds and what operations can be performed on it.`,
+    code:`<span class="cm"># Basic variable assignment</span>
+name = <span class="str">"Ravi"</span>        <span class="cm"># str</span>
+age = <span class="num">22</span>             <span class="cm"># int</span>
+salary = <span class="num">35000.50</span>     <span class="cm"># float</span>
+is_placed = <span class="kw">True</span>      <span class="cm"># bool</span>
 
-  <!-- TOP BAR -->
-  <header class="topbar">
-    <button class="menu-btn" id="menuBtn">☰</button>
-    <div class="topbar-title" id="topbarTitle">Python & SQL Master</div>
-    <div class="topbar-actions">
-      <button class="mode-btn" id="modeBtn" title="Toggle Dark/Light">🌙</button>
-      <div class="progress-chip" id="progressChip">0%</div>
-    </div>
-  </header>
+<span class="cm"># Check type</span>
+<span class="fn">print</span>(<span class="fn">type</span>(name))     <span class="cm"># &lt;class 'str'&gt;</span>
+<span class="fn">print</span>(<span class="fn">type</span>(age))      <span class="cm"># &lt;class 'int'&gt;</span>
 
-  <!-- HOME SCREEN -->
-  <section class="home-screen" id="homeScreen">
-    <div class="hero">
-      <div class="hero-badge">Interview Ready</div>
-      <h1 class="hero-title">Master <span>Python</span> &amp; <span>SQL</span></h1>
-      <p class="hero-sub">From zero to interview-ready. Every topic explained with definitions, real-world examples, programs, and curated interview Q&amp;A.</p>
-      <div class="hero-stats">
-        <div class="stat"><strong id="statTopics">80+</strong><span>Topics</span></div>
-        <div class="stat"><strong>500+</strong><span>Programs</span></div>
-        <div class="stat"><strong>300+</strong><span>Interview Q&amp;A</span></div>
-      </div>
-      <div class="hero-btns">
-        <button class="btn-primary" onclick="startLang('python')">🐍 Start Python</button>
-        <button class="btn-secondary" onclick="startLang('sql')">🗄️ Start SQL</button>
-      </div>
-    </div>
+<span class="cm"># Multiple assignment</span>
+x, y, z = <span class="num">1</span>, <span class="num">2</span>, <span class="num">3</span>
+<span class="fn">print</span>(x, y, z)       <span class="cm"># 1 2 3</span>`,
+    qna:[
+      {q:"What is the difference between list and tuple?",a:"<strong>List</strong> is mutable (can be changed after creation) — you can add, remove, or modify elements. <strong>Tuple</strong> is immutable (cannot be changed). Lists use square brackets [], tuples use parentheses (). Use tuple when data should not change — like coordinates or config values."},
+      {q:"What is dynamic typing in Python?",a:"In Python, you don't declare the type of a variable. The type is determined at runtime based on the value assigned. For example, x = 5 makes x an integer, but if you later do x = 'hello', x becomes a string. This is called dynamic typing."}
+    ]
+  },
+  {
+    name:"Functions & Scope",tag:"Core",color:"#6366f1",
+    explain:`Functions in Python are defined using the <strong>def</strong> keyword. They allow code reuse. Python follows the <strong>LEGB rule</strong> for scope — Local → Enclosing → Global → Built-in. 
+A function can have default arguments, *args (variable positional), and **kwargs (variable keyword arguments).`,
+    def:`A function is a block of reusable code that performs a specific task. Scope defines where a variable is accessible in the code.`,
+    code:`<span class="kw">def</span> <span class="fn">greet</span>(name, greeting=<span class="str">"Hello"</span>):
+    <span class="str">"""Returns a greeting message"""</span>
+    <span class="kw">return</span> <span class="fn">f</span><span class="str">"{greeting}, {name}!"</span>
 
-    <div class="cards-grid" id="homeCards"></div>
-  </section>
+<span class="fn">print</span>(<span class="fn">greet</span>(<span class="str">"Ravi"</span>))          <span class="cm"># Hello, Ravi!</span>
+<span class="fn">print</span>(<span class="fn">greet</span>(<span class="str">"Priya"</span>, <span class="str">"Hi"</span>))  <span class="cm"># Hi, Priya!</span>
 
-  <!-- TOPIC CONTENT SCREEN -->
-  <section class="content-screen" id="contentScreen" style="display:none">
-    <div class="content-header">
-      <button class="back-btn" id="backBtn">← Back</button>
-      <div class="breadcrumb" id="breadcrumb"></div>
-      <div class="topic-progress-bar"><div class="topic-progress-fill" id="topicProgressFill"></div></div>
-    </div>
+<span class="cm"># *args example</span>
+<span class="kw">def</span> <span class="fn">total</span>(*numbers):
+    <span class="kw">return</span> <span class="fn">sum</span>(numbers)
 
-    <div class="content-tabs">
-      <button class="ctab active" data-tab="learn">📖 Learn</button>
-      <button class="ctab" data-tab="examples">💡 Examples</button>
-      <button class="ctab" data-tab="practice">✏️ Practice</button>
-      <button class="ctab" data-tab="interview">🎯 Interview</button>
-    </div>
+<span class="fn">print</span>(<span class="fn">total</span>(<span class="num">1</span>,<span class="num">2</span>,<span class="num">3</span>,<span class="num">4</span>))  <span class="cm"># 10</span>`,
+    qna:[
+      {q:"What is the difference between *args and **kwargs?",a:"<strong>*args</strong> collects extra positional arguments as a tuple. <strong>**kwargs</strong> collects extra keyword arguments as a dictionary. Use *args when you don't know how many positional values will be passed, and **kwargs for named parameters. Example: def func(*args, **kwargs)."},
+      {q:"What is a lambda function?",a:"A lambda is an anonymous (nameless) single-line function. Syntax: <code>lambda arguments: expression</code>. Example: <code>square = lambda x: x*x</code>. Used for short operations — commonly with map(), filter(), sorted(). For complex logic, prefer regular def functions."}
+    ]
+  },
+  {
+    name:"Lists, Dicts & Comprehensions",tag:"Collections",color:"#10b981",
+    explain:`Python's built-in collections are very powerful. <strong>List</strong> stores ordered items. <strong>Dict</strong> stores key-value pairs. <strong>Set</strong> stores unique unordered items.
+<strong>List comprehensions</strong> provide a short, readable way to create lists. They are faster than regular for loops.`,
+    def:`A list is an ordered, mutable collection. A dictionary maps unique keys to values. Comprehension is a concise syntax to build collections using an expression and a loop.`,
+    code:`<span class="cm"># List comprehension</span>
+squares = [x**<span class="num">2</span> <span class="kw">for</span> x <span class="kw">in</span> <span class="fn">range</span>(<span class="num">1</span>,<span class="num">6</span>)]
+<span class="fn">print</span>(squares)  <span class="cm"># [1, 4, 9, 16, 25]</span>
 
-    <div class="content-body" id="contentBody">
-      <div class="ai-loading" id="aiLoading">
-        <div class="ai-spinner"></div>
-        <p>Generating content with AI...</p>
-      </div>
-      <div id="learnTab" class="tab-pane active"></div>
-      <div id="examplesTab" class="tab-pane" style="display:none"></div>
-      <div id="practiceTab" class="tab-pane" style="display:none"></div>
-      <div id="interviewTab" class="tab-pane" style="display:none"></div>
-    </div>
+<span class="cm"># Dict comprehension</span>
+students = {<span class="str">"Ravi"</span>:<span class="num">85</span>, <span class="str">"Priya"</span>:<span class="num">92</span>, <span class="str">"Sam"</span>:<span class="num">78</span>}
+passed = {k:v <span class="kw">for</span> k,v <span class="kw">in</span> students.items() <span class="kw">if</span> v >= <span class="num">80</span>}
+<span class="fn">print</span>(passed)  <span class="cm"># {'Ravi': 85, 'Priya': 92}</span>
 
-    <div class="nav-footer">
-      <button class="nav-arrow" id="prevTopic">← Prev</button>
-      <button class="mark-done-btn" id="markDoneBtn">Mark as Done ✓</button>
-      <button class="nav-arrow" id="nextTopic">Next →</button>
-    </div>
-  </section>
-
-</main>
-
-<script src="app.js"></script>
-</body>
-</html>
+<span class="cm"># Filter even numbers</span>
+evens = [x <span class="kw">for</span> x <span class="kw">in</span> <span class="fn">range</span>(<span class="num">10</span>) <span class="kw">if</span> x % <span class="num">2</span> == <span class="num">0</span>]`,
+    qna:[
+  

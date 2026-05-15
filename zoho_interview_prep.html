@@ -1,0 +1,1035 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Zoho Interview Prep</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=JetBrains+Mono:wght@400;500&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,400&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0a0e1a;
+    --surface: #111827;
+    --surface2: #1a2234;
+    --border: #1e2d45;
+    --accent: #00d4ff;
+    --accent2: #7c3aed;
+    --accent3: #10b981;
+    --accent4: #f59e0b;
+    --accent5: #ef4444;
+    --text: #e2e8f0;
+    --muted: #64748b;
+    --code-bg: #0d1117;
+  }
+  * { margin:0; padding:0; box-sizing:border-box; }
+  body { font-family:'DM Sans',sans-serif; background:var(--bg); color:var(--text); min-height:100vh; }
+
+  /* HEADER */
+  .header {
+    background: linear-gradient(135deg, #0a0e1a 0%, #111827 50%, #0d1b2a 100%);
+    border-bottom: 1px solid var(--border);
+    padding: 28px 32px 20px;
+    position: sticky; top:0; z-index:100;
+    backdrop-filter: blur(12px);
+  }
+  .header-top { display:flex; align-items:center; gap:16px; margin-bottom:20px; }
+  .logo { font-family:'Syne',sans-serif; font-size:22px; font-weight:800; }
+  .logo span { color:var(--accent); }
+  .badge { background: linear-gradient(135deg,#7c3aed,#00d4ff); color:#fff; font-size:11px; font-weight:600; padding:3px 10px; border-radius:20px; letter-spacing:1px; }
+
+  /* TABS */
+  .tabs { display:flex; gap:6px; flex-wrap:wrap; }
+  .tab {
+    font-family:'Syne',sans-serif; font-size:13px; font-weight:600;
+    padding:8px 18px; border-radius:8px; cursor:pointer; border:1px solid var(--border);
+    background:transparent; color:var(--muted); transition:all 0.2s; letter-spacing:0.3px;
+  }
+  .tab:hover { border-color:var(--accent); color:var(--accent); }
+  .tab.active { color:#fff; border-color:transparent; }
+  .tab[data-tab="python"].active { background: linear-gradient(135deg,#3b82f6,#1d4ed8); }
+  .tab[data-tab="sql"].active { background: linear-gradient(135deg,#10b981,#047857); }
+  .tab[data-tab="oops"].active { background: linear-gradient(135deg,#f59e0b,#d97706); }
+  .tab[data-tab="hr"].active { background: linear-gradient(135deg,#ec4899,#be185d); }
+  .tab[data-tab="zoho"].active { background: linear-gradient(135deg,#7c3aed,#5b21b6); }
+
+  /* MAIN */
+  .main { max-width:1100px; margin:0 auto; padding:32px 24px; }
+  .section { display:none; }
+  .section.active { display:block; animation: fadeUp 0.35s ease; }
+  @keyframes fadeUp { from { opacity:0; transform:translateY(14px); } to { opacity:1; transform:translateY(0); } }
+
+  .section-title {
+    font-family:'Syne',sans-serif; font-size:28px; font-weight:800;
+    margin-bottom:8px; display:flex; align-items:center; gap:12px;
+  }
+  .section-sub { color:var(--muted); margin-bottom:32px; font-size:15px; }
+
+  /* TOPIC CARDS */
+  .topics-grid { display:grid; gap:20px; }
+  .topic-card {
+    background:var(--surface); border:1px solid var(--border);
+    border-radius:14px; overflow:hidden; transition:border-color 0.2s;
+  }
+  .topic-card:hover { border-color:var(--accent); }
+
+  .topic-header {
+    display:flex; align-items:center; justify-content:space-between;
+    padding:18px 22px; cursor:pointer; user-select:none;
+  }
+  .topic-header-left { display:flex; align-items:center; gap:14px; }
+  .topic-num {
+    width:32px; height:32px; border-radius:8px; display:flex; align-items:center;
+    justify-content:center; font-family:'Syne',sans-serif; font-weight:700; font-size:13px;
+    flex-shrink:0;
+  }
+  .topic-name { font-family:'Syne',sans-serif; font-weight:700; font-size:16px; }
+  .topic-tag { font-size:11px; color:var(--muted); background:var(--surface2); padding:2px 8px; border-radius:4px; }
+  .chevron { color:var(--muted); transition:transform 0.25s; font-size:18px; }
+  .topic-card.open .chevron { transform:rotate(180deg); }
+
+  .topic-body { display:none; border-top:1px solid var(--border); }
+  .topic-card.open .topic-body { display:block; }
+
+  /* INNER TABS */
+  .inner-tabs { display:flex; border-bottom:1px solid var(--border); background:var(--surface2); }
+  .inner-tab {
+    flex:1; text-align:center; padding:12px 8px; font-size:12px; font-weight:600;
+    cursor:pointer; color:var(--muted); border-bottom:2px solid transparent;
+    transition:all 0.2s; font-family:'Syne',sans-serif; letter-spacing:0.3px;
+  }
+  .inner-tab.active { color:var(--accent); border-bottom-color:var(--accent); background:transparent; }
+
+  .inner-panel { display:none; padding:22px; }
+  .inner-panel.active { display:block; }
+
+  /* EXPLANATION BOX */
+  .explain-box {
+    background:var(--surface2); border-left:3px solid var(--accent);
+    border-radius:0 10px 10px 0; padding:16px 20px; margin-bottom:16px;
+    line-height:1.75; font-size:14.5px;
+  }
+  .explain-box.green { border-left-color:var(--accent3); }
+  .explain-box.yellow { border-left-color:var(--accent4); }
+  .explain-box.purple { border-left-color:var(--accent2); }
+
+  /* DEF BOX */
+  .def-box {
+    background: linear-gradient(135deg, rgba(0,212,255,0.06), rgba(124,58,237,0.06));
+    border:1px solid rgba(0,212,255,0.2); border-radius:10px;
+    padding:14px 18px; margin-bottom:16px; font-size:14px; line-height:1.7;
+  }
+  .def-label {
+    font-family:'Syne',sans-serif; font-size:11px; font-weight:700;
+    color:var(--accent); text-transform:uppercase; letter-spacing:1px; margin-bottom:6px;
+  }
+
+  /* CODE */
+  pre {
+    background:var(--code-bg); border:1px solid var(--border);
+    border-radius:10px; padding:16px 18px; overflow-x:auto;
+    font-family:'JetBrains Mono',monospace; font-size:13px; line-height:1.7;
+    margin-bottom:14px; position:relative;
+  }
+  .code-label {
+    font-family:'JetBrains Mono',monospace; font-size:10px;
+    background:var(--accent); color:#000; font-weight:700;
+    padding:2px 8px; border-radius:3px; display:inline-block; margin-bottom:8px;
+  }
+  .kw { color:#ff7b72; }
+  .fn { color:#d2a8ff; }
+  .str { color:#a5f3fc; }
+  .cm { color:#6e7681; font-style:italic; }
+  .num { color:#f59e0b; }
+  .cls { color:#ffa657; }
+
+  /* QNA */
+  .qna-item { margin-bottom:20px; border:1px solid var(--border); border-radius:10px; overflow:hidden; }
+  .qna-q {
+    background:var(--surface2); padding:14px 18px;
+    font-weight:600; font-size:14px; display:flex; gap:10px; align-items:flex-start;
+  }
+  .q-badge {
+    background:var(--accent); color:#000; font-family:'Syne',sans-serif;
+    font-size:11px; font-weight:800; padding:2px 7px; border-radius:4px; flex-shrink:0; margin-top:1px;
+  }
+  .qna-a { padding:14px 18px; font-size:14px; line-height:1.75; color:#cbd5e1; }
+  .qna-a strong { color:var(--text); }
+
+  /* HR SECTION */
+  .hr-card { background:var(--surface); border:1px solid var(--border); border-radius:12px; margin-bottom:18px; overflow:hidden; }
+  .hr-q { background:linear-gradient(135deg,rgba(236,72,153,0.1),rgba(190,24,93,0.05)); padding:16px 20px; font-weight:600; font-size:15px; border-bottom:1px solid var(--border); display:flex; gap:10px; }
+  .hr-badge { background:#ec4899; color:#fff; font-size:11px; font-weight:700; padding:2px 8px; border-radius:4px; flex-shrink:0; }
+  .hr-a { padding:16px 20px; font-size:14px; line-height:1.8; color:#cbd5e1; }
+  .tip-box { background:rgba(16,185,129,0.08); border:1px solid rgba(16,185,129,0.2); border-radius:8px; padding:10px 14px; margin-top:10px; font-size:13px; }
+  .tip-label { color:var(--accent3); font-weight:700; font-size:11px; letter-spacing:0.5px; }
+
+  /* ZOHO PRODUCTS */
+  .products-grid { display:grid; grid-template-columns: repeat(auto-fill, minmax(280px,1fr)); gap:16px; margin-bottom:28px; }
+  .product-pill {
+    background:var(--surface); border:1px solid var(--border);
+    border-radius:12px; padding:16px 18px; cursor:pointer;
+    transition:all 0.2s; display:flex; align-items:center; gap:14px;
+  }
+  .product-pill:hover, .product-pill.selected { border-color:var(--accent2); background:rgba(124,58,237,0.08); }
+  .product-icon { font-size:26px; width:42px; height:42px; display:flex; align-items:center; justify-content:center; background:var(--surface2); border-radius:10px; }
+  .product-info { flex:1; }
+  .product-name { font-family:'Syne',sans-serif; font-weight:700; font-size:15px; }
+  .product-cat { font-size:11px; color:var(--muted); margin-top:2px; }
+
+  .zoho-detail { display:none; }
+  .zoho-detail.active { display:block; animation: fadeUp 0.3s ease; }
+
+  .zoho-hero {
+    background: linear-gradient(135deg, rgba(124,58,237,0.15), rgba(0,212,255,0.08));
+    border:1px solid rgba(124,58,237,0.3); border-radius:14px;
+    padding:24px 28px; margin-bottom:24px;
+    display:flex; align-items:center; gap:20px;
+  }
+  .zoho-hero-icon { font-size:48px; }
+  .zoho-hero-title { font-family:'Syne',sans-serif; font-size:24px; font-weight:800; }
+  .zoho-hero-sub { color:var(--muted); font-size:14px; margin-top:4px; }
+
+  .feature-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(200px,1fr)); gap:12px; margin:16px 0; }
+  .feature-chip { background:var(--surface2); border:1px solid var(--border); border-radius:8px; padding:10px 14px; font-size:13px; display:flex; gap:8px; align-items:center; }
+  .feature-chip span { font-size:16px; }
+
+  .level-badge { display:inline-block; font-size:11px; font-weight:700; padding:3px 10px; border-radius:20px; margin-right:6px; margin-bottom:8px; }
+  .l-basic { background:rgba(16,185,129,0.15); color:var(--accent3); border:1px solid rgba(16,185,129,0.3); }
+  .l-mid { background:rgba(245,158,11,0.15); color:var(--accent4); border:1px solid rgba(245,158,11,0.3); }
+  .l-deep { background:rgba(239,68,68,0.15); color:var(--accent5); border:1px solid rgba(239,68,68,0.3); }
+
+  h4 { font-family:'Syne',sans-serif; font-weight:700; font-size:15px; margin:20px 0 10px; color:var(--accent); }
+  h5 { font-family:'Syne',sans-serif; font-weight:700; font-size:13px; margin:14px 0 8px; color:var(--accent4); }
+  ul { padding-left:18px; }
+  li { font-size:14px; line-height:1.75; color:#cbd5e1; margin-bottom:4px; }
+  strong { color:#e2e8f0; }
+
+  .back-btn { background:var(--surface2); border:1px solid var(--border); color:var(--text); padding:8px 16px; border-radius:8px; cursor:pointer; font-family:'Syne',sans-serif; font-weight:600; font-size:13px; margin-bottom:20px; display:inline-flex; align-items:center; gap:6px; }
+  .back-btn:hover { border-color:var(--accent); color:var(--accent); }
+
+  .progress-bar { height:3px; background:var(--border); border-radius:2px; margin-bottom:28px; }
+  .progress-fill { height:100%; border-radius:2px; background:linear-gradient(90deg,var(--accent),var(--accent2)); width:0; transition:width 0.5s; }
+
+  @media(max-width:600px) {
+    .header { padding:18px 16px 14px; }
+    .main { padding:20px 14px; }
+    .tab { padding:6px 12px; font-size:12px; }
+    .products-grid { grid-template-columns:1fr; }
+    .feature-grid { grid-template-columns:1fr 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div class="header-top">
+    <div class="logo">Zoho <span>Interview</span> Prep</div>
+    <div class="badge">5-IN-1 GUIDE</div>
+  </div>
+  <div class="tabs">
+    <button class="tab active" data-tab="python">🐍 Python</button>
+    <button class="tab" data-tab="sql">🗄️ SQL</button>
+    <button class="tab" data-tab="oops">🧱 OOP</button>
+    <button class="tab" data-tab="hr">🤝 HR Round</button>
+    <button class="tab" data-tab="zoho">🏢 Zoho Products</button>
+  </div>
+</div>
+
+<div class="main">
+
+<!-- ==================== PYTHON ==================== -->
+<div class="section active" id="python">
+  <div class="section-title">🐍 Python <span style="color:var(--accent);font-size:18px;font-weight:400">Fundamentals</span></div>
+  <div class="section-sub">Core topics with explanation, definition, example programs & interview Q&A</div>
+  <div class="topics-grid" id="python-topics"></div>
+</div>
+
+<!-- ==================== SQL ==================== -->
+<div class="section" id="sql">
+  <div class="section-title">🗄️ SQL <span style="color:var(--accent3);font-size:18px;font-weight:400">Essentials</span></div>
+  <div class="section-sub">Topic explanations, definitions, queries, and interview-style Q&A</div>
+  <div class="topics-grid" id="sql-topics"></div>
+</div>
+
+<!-- ==================== OOPS ==================== -->
+<div class="section" id="oops">
+  <div class="section-title">🧱 Object-Oriented <span style="color:var(--accent4);font-size:18px;font-weight:400">Programming</span></div>
+  <div class="section-sub">OOP concepts with real examples and interview answers</div>
+  <div class="topics-grid" id="oops-topics"></div>
+</div>
+
+<!-- ==================== HR ==================== -->
+<div class="section" id="hr">
+  <div class="section-title">🤝 HR Round <span style="color:#ec4899;font-size:18px;font-weight:400">Preparation</span></div>
+  <div class="section-sub">Personal questions + Discussion topics with ideal interview-style answers</div>
+  <div id="hr-content"></div>
+</div>
+
+<!-- ==================== ZOHO ==================== -->
+<div class="section" id="zoho">
+  <div class="section-title">🏢 Zoho <span style="color:var(--accent2);font-size:18px;font-weight:400">Products</span></div>
+  <div class="section-sub">Deep dive into Zoho's product suite — from basics to advanced, with interview Q&A</div>
+  <div id="zoho-list">
+    <div style="margin-bottom:12px;font-family:'Syne',sans-serif;font-weight:700;font-size:13px;color:var(--accent);text-transform:uppercase;letter-spacing:1px;">🎯 Your Main Task Products</div>
+    <div class="products-grid" id="main-products"></div>
+    <div style="margin-bottom:12px;margin-top:24px;font-family:'Syne',sans-serif;font-weight:700;font-size:13px;color:var(--muted);text-transform:uppercase;letter-spacing:1px;">📦 Extra Zoho Products</div>
+    <div class="products-grid" id="extra-products"></div>
+  </div>
+  <div id="zoho-detail-area"></div>
+</div>
+
+</div><!-- /main -->
+
+<script>
+// ================================================================
+// DATA
+// ================================================================
+
+const pythonTopics = [
+  {
+    name:"Variables & Data Types",tag:"Basics",color:"#3b82f6",
+    explain:`Python is a dynamically typed language. You don't need to declare the type of a variable — Python figures it out automatically at runtime.
+Variables are just names pointing to objects in memory. Python has built-in data types like <strong>int, float, str, bool, list, tuple, dict, set</strong>.`,
+    def:`A variable is a named reference to a value stored in memory. Data type defines what kind of value it holds and what operations can be performed on it.`,
+    code:`<span class="cm"># Basic variable assignment</span>
+name = <span class="str">"Ravi"</span>        <span class="cm"># str</span>
+age = <span class="num">22</span>             <span class="cm"># int</span>
+salary = <span class="num">35000.50</span>     <span class="cm"># float</span>
+is_placed = <span class="kw">True</span>      <span class="cm"># bool</span>
+
+<span class="cm"># Check type</span>
+<span class="fn">print</span>(<span class="fn">type</span>(name))     <span class="cm"># &lt;class 'str'&gt;</span>
+<span class="fn">print</span>(<span class="fn">type</span>(age))      <span class="cm"># &lt;class 'int'&gt;</span>
+
+<span class="cm"># Multiple assignment</span>
+x, y, z = <span class="num">1</span>, <span class="num">2</span>, <span class="num">3</span>
+<span class="fn">print</span>(x, y, z)       <span class="cm"># 1 2 3</span>`,
+    qna:[
+      {q:"What is the difference between list and tuple?",a:"<strong>List</strong> is mutable (can be changed after creation) — you can add, remove, or modify elements. <strong>Tuple</strong> is immutable (cannot be changed). Lists use square brackets [], tuples use parentheses (). Use tuple when data should not change — like coordinates or config values."},
+      {q:"What is dynamic typing in Python?",a:"In Python, you don't declare the type of a variable. The type is determined at runtime based on the value assigned. For example, x = 5 makes x an integer, but if you later do x = 'hello', x becomes a string. This is called dynamic typing."}
+    ]
+  },
+  {
+    name:"Functions & Scope",tag:"Core",color:"#6366f1",
+    explain:`Functions in Python are defined using the <strong>def</strong> keyword. They allow code reuse. Python follows the <strong>LEGB rule</strong> for scope — Local → Enclosing → Global → Built-in. 
+A function can have default arguments, *args (variable positional), and **kwargs (variable keyword arguments).`,
+    def:`A function is a block of reusable code that performs a specific task. Scope defines where a variable is accessible in the code.`,
+    code:`<span class="kw">def</span> <span class="fn">greet</span>(name, greeting=<span class="str">"Hello"</span>):
+    <span class="str">"""Returns a greeting message"""</span>
+    <span class="kw">return</span> <span class="fn">f</span><span class="str">"{greeting}, {name}!"</span>
+
+<span class="fn">print</span>(<span class="fn">greet</span>(<span class="str">"Ravi"</span>))          <span class="cm"># Hello, Ravi!</span>
+<span class="fn">print</span>(<span class="fn">greet</span>(<span class="str">"Priya"</span>, <span class="str">"Hi"</span>))  <span class="cm"># Hi, Priya!</span>
+
+<span class="cm"># *args example</span>
+<span class="kw">def</span> <span class="fn">total</span>(*numbers):
+    <span class="kw">return</span> <span class="fn">sum</span>(numbers)
+
+<span class="fn">print</span>(<span class="fn">total</span>(<span class="num">1</span>,<span class="num">2</span>,<span class="num">3</span>,<span class="num">4</span>))  <span class="cm"># 10</span>`,
+    qna:[
+      {q:"What is the difference between *args and **kwargs?",a:"<strong>*args</strong> collects extra positional arguments as a tuple. <strong>**kwargs</strong> collects extra keyword arguments as a dictionary. Use *args when you don't know how many positional values will be passed, and **kwargs for named parameters. Example: def func(*args, **kwargs)."},
+      {q:"What is a lambda function?",a:"A lambda is an anonymous (nameless) single-line function. Syntax: <code>lambda arguments: expression</code>. Example: <code>square = lambda x: x*x</code>. Used for short operations — commonly with map(), filter(), sorted(). For complex logic, prefer regular def functions."}
+    ]
+  },
+  {
+    name:"Lists, Dicts & Comprehensions",tag:"Collections",color:"#10b981",
+    explain:`Python's built-in collections are very powerful. <strong>List</strong> stores ordered items. <strong>Dict</strong> stores key-value pairs. <strong>Set</strong> stores unique unordered items.
+<strong>List comprehensions</strong> provide a short, readable way to create lists. They are faster than regular for loops.`,
+    def:`A list is an ordered, mutable collection. A dictionary maps unique keys to values. Comprehension is a concise syntax to build collections using an expression and a loop.`,
+    code:`<span class="cm"># List comprehension</span>
+squares = [x**<span class="num">2</span> <span class="kw">for</span> x <span class="kw">in</span> <span class="fn">range</span>(<span class="num">1</span>,<span class="num">6</span>)]
+<span class="fn">print</span>(squares)  <span class="cm"># [1, 4, 9, 16, 25]</span>
+
+<span class="cm"># Dict comprehension</span>
+students = {<span class="str">"Ravi"</span>:<span class="num">85</span>, <span class="str">"Priya"</span>:<span class="num">92</span>, <span class="str">"Sam"</span>:<span class="num">78</span>}
+passed = {k:v <span class="kw">for</span> k,v <span class="kw">in</span> students.items() <span class="kw">if</span> v >= <span class="num">80</span>}
+<span class="fn">print</span>(passed)  <span class="cm"># {'Ravi': 85, 'Priya': 92}</span>
+
+<span class="cm"># Filter even numbers</span>
+evens = [x <span class="kw">for</span> x <span class="kw">in</span> <span class="fn">range</span>(<span class="num">10</span>) <span class="kw">if</span> x % <span class="num">2</span> == <span class="num">0</span>]`,
+    qna:[
+      {q:"What is the difference between append() and extend() in a list?",a:"<strong>append()</strong> adds a single element to the end of a list. <strong>extend()</strong> adds all elements from an iterable. Example: lst.append([1,2]) adds the list as one element; lst.extend([1,2]) adds 1 and 2 separately as two elements."},
+      {q:"How are dictionaries ordered in Python?",a:"From Python 3.7 onwards, dictionaries maintain insertion order. So when you iterate over a dict, items come out in the order they were inserted. Before 3.7, dicts were unordered. This is now a guaranteed language feature, not just an implementation detail."}
+    ]
+  },
+  {
+    name:"Exception Handling",tag:"Error Control",color:"#f59e0b",
+    explain:`Errors in Python are called <strong>Exceptions</strong>. If not handled, they crash the program. Python provides <strong>try-except-else-finally</strong> blocks to handle exceptions gracefully.
+Common exceptions: ValueError, TypeError, KeyError, IndexError, ZeroDivisionError, FileNotFoundError.`,
+    def:`Exception handling is a mechanism to catch and respond to runtime errors without stopping the program. It separates normal code from error-handling code.`,
+    code:`<span class="kw">def</span> <span class="fn">divide</span>(a, b):
+    <span class="kw">try</span>:
+        result = a / b
+    <span class="kw">except</span> <span class="cls">ZeroDivisionError</span>:
+        <span class="kw">return</span> <span class="str">"Error: Cannot divide by zero"</span>
+    <span class="kw">except</span> <span class="cls">TypeError</span>:
+        <span class="kw">return</span> <span class="str">"Error: Invalid input type"</span>
+    <span class="kw">else</span>:
+        <span class="kw">return</span> result
+    <span class="kw">finally</span>:
+        <span class="fn">print</span>(<span class="str">"Execution complete"</span>)
+
+<span class="fn">print</span>(<span class="fn">divide</span>(<span class="num">10</span>, <span class="num">2</span>))   <span class="cm"># 5.0</span>
+<span class="fn">print</span>(<span class="fn">divide</span>(<span class="num">10</span>, <span class="num">0</span>))   <span class="cm"># Error: Cannot divide by zero</span>`,
+    qna:[
+      {q:"What is the use of 'finally' block in exception handling?",a:"The <strong>finally</strong> block always executes regardless of whether an exception occurred or not. It's used for cleanup operations — like closing a file or database connection. Even if there's a return statement in try or except, finally still runs."},
+      {q:"How do you create a custom exception in Python?",a:"You create a custom exception by creating a class that inherits from the built-in <code>Exception</code> class. Example: <code>class AgeError(Exception): pass</code>. Then raise it with <code>raise AgeError('Age cannot be negative')</code>. This helps make your error messages more specific and meaningful."}
+    ]
+  },
+  {
+    name:"File Handling",tag:"I/O",color:"#8b5cf6",
+    explain:`Python can read and write files using the built-in <strong>open()</strong> function. Modes: <strong>r</strong> (read), <strong>w</strong> (write), <strong>a</strong> (append), <strong>rb/wb</strong> (binary).
+The <strong>with</strong> statement is the best practice — it automatically closes the file even if an error occurs.`,
+    def:`File handling allows programs to read data from and write data to files on disk, enabling data persistence beyond program execution.`,
+    code:`<span class="cm"># Writing to a file</span>
+<span class="kw">with</span> <span class="fn">open</span>(<span class="str">"students.txt"</span>, <span class="str">"w"</span>) <span class="kw">as</span> f:
+    f.<span class="fn">write</span>(<span class="str">"Ravi\n"</span>)
+    f.<span class="fn">write</span>(<span class="str">"Priya\n"</span>)
+
+<span class="cm"># Reading from a file</span>
+<span class="kw">with</span> <span class="fn">open</span>(<span class="str">"students.txt"</span>, <span class="str">"r"</span>) <span class="kw">as</span> f:
+    <span class="kw">for</span> line <span class="kw">in</span> f:
+        <span class="fn">print</span>(line.<span class="fn">strip</span>())
+
+<span class="cm"># Read all lines as list</span>
+<span class="kw">with</span> <span class="fn">open</span>(<span class="str">"students.txt"</span>) <span class="kw">as</span> f:
+    lines = f.<span class="fn">readlines</span>()
+    <span class="fn">print</span>(lines)`,
+    qna:[
+      {q:"Why should we use 'with' statement for file handling?",a:"The <strong>with</strong> statement ensures the file is properly closed after the block ends, even if an exception occurs. Without it, you have to manually call file.close(), and if an error occurs before that line, the file stays open — wasting memory and causing issues. 'with' is cleaner and safer."},
+      {q:"What is the difference between read(), readline(), and readlines()?",a:"<strong>read()</strong> reads the entire file as a single string. <strong>readline()</strong> reads one line at a time. <strong>readlines()</strong> reads all lines and returns them as a list of strings. For large files, readline() or iterating line-by-line with a for loop is memory efficient."}
+    ]
+  },
+];
+
+const sqlTopics = [
+  {
+    name:"SELECT, WHERE & Filtering",tag:"Basics",color:"#10b981",
+    explain:`The <strong>SELECT</strong> statement retrieves data from a table. <strong>WHERE</strong> filters rows based on a condition. You can use <strong>AND, OR, NOT</strong> to combine conditions, and <strong>LIKE</strong> for pattern matching, <strong>IN</strong> for multiple values, <strong>BETWEEN</strong> for ranges.`,
+    def:`SELECT is the fundamental SQL command used to query data. WHERE clause filters which rows to return based on conditions.`,
+    code:`<span class="cm">-- Get all employees in Chennai</span>
+<span class="kw">SELECT</span> name, salary, department
+<span class="kw">FROM</span> employees
+<span class="kw">WHERE</span> city = <span class="str">'Chennai'</span>
+  <span class="kw">AND</span> salary > <span class="num">30000</span>;
+
+<span class="cm">-- Pattern matching</span>
+<span class="kw">SELECT</span> * <span class="kw">FROM</span> employees
+<span class="kw">WHERE</span> name <span class="kw">LIKE</span> <span class="str">'R%'</span>;  <span class="cm">-- names starting with R</span>
+
+<span class="cm">-- IN and BETWEEN</span>
+<span class="kw">SELECT</span> * <span class="kw">FROM</span> employees
+<span class="kw">WHERE</span> department <span class="kw">IN</span> (<span class="str">'HR'</span>, <span class="str">'IT'</span>)
+  <span class="kw">AND</span> salary <span class="kw">BETWEEN</span> <span class="num">20000</span> <span class="kw">AND</span> <span class="num">50000</span>;`,
+    qna:[
+      {q:"What is the difference between WHERE and HAVING?",a:"<strong>WHERE</strong> filters rows before aggregation — it works on individual rows. <strong>HAVING</strong> filters groups after a GROUP BY aggregation. Example: WHERE salary > 30000 filters individual rows. HAVING COUNT(*) > 5 filters after grouping. You cannot use aggregate functions like SUM or COUNT in WHERE."},
+      {q:"What does LIKE '%a%' mean?",a:"It matches any string that contains the letter 'a' anywhere. The % symbol is a wildcard for zero or more characters. So 'Ravi', 'Priya', 'Karthik' all match. If you use 'a%', it matches strings that start with 'a'. '%a' matches strings ending with 'a'."}
+    ]
+  },
+  {
+    name:"JOINs",tag:"Relations",color:"#3b82f6",
+    explain:`JOINs combine rows from two or more tables based on a related column. Types:
+<strong>INNER JOIN</strong> – only matching rows from both tables.
+<strong>LEFT JOIN</strong> – all rows from left table + matching from right.
+<strong>RIGHT JOIN</strong> – all rows from right + matching from left.
+<strong>FULL JOIN</strong> – all rows from both tables.`,
+    def:`A JOIN is a SQL operation that combines columns from two tables based on a related field (usually a foreign key relationship).`,
+    code:`<span class="cm">-- INNER JOIN: only matched records</span>
+<span class="kw">SELECT</span> e.name, d.dept_name
+<span class="kw">FROM</span> employees e
+<span class="kw">INNER JOIN</span> departments d
+  <span class="kw">ON</span> e.dept_id = d.id;
+
+<span class="cm">-- LEFT JOIN: all employees, even without dept</span>
+<span class="kw">SELECT</span> e.name, d.dept_name
+<span class="kw">FROM</span> employees e
+<span class="kw">LEFT JOIN</span> departments d
+  <span class="kw">ON</span> e.dept_id = d.id;
+
+<span class="cm">-- Self JOIN: find employees with same manager</span>
+<span class="kw">SELECT</span> a.name <span class="kw">AS</span> emp, b.name <span class="kw">AS</span> manager
+<span class="kw">FROM</span> employees a
+<span class="kw">JOIN</span> employees b <span class="kw">ON</span> a.manager_id = b.id;`,
+    qna:[
+      {q:"What is the difference between INNER JOIN and LEFT JOIN?",a:"<strong>INNER JOIN</strong> returns only the rows where there is a match in both tables. If an employee has no department, they won't appear. <strong>LEFT JOIN</strong> returns all rows from the left table and the matched rows from the right. If no match, right side shows NULL. Use LEFT JOIN when you want to keep all records from the main table."},
+      {q:"Can you join a table to itself? When would you do that?",a:"Yes — it's called a <strong>Self Join</strong>. You use it when a table has a relationship with itself. The most common example is an employee table where each employee has a manager_id that refers to another employee in the same table. You join the table to itself with different aliases (e.g., e and m) to get employee and manager names."}
+    ]
+  },
+  {
+    name:"GROUP BY & Aggregate Functions",tag:"Analytics",color:"#f59e0b",
+    explain:`Aggregate functions perform calculations across a set of rows: <strong>COUNT, SUM, AVG, MAX, MIN</strong>.
+<strong>GROUP BY</strong> groups rows sharing the same value so aggregates apply per group.
+<strong>ORDER BY</strong> sorts the result. <strong>HAVING</strong> filters groups.`,
+    def:`Aggregate functions reduce multiple rows to a single value. GROUP BY partitions data into groups so aggregates apply per group rather than the whole table.`,
+    code:`<span class="cm">-- Count employees per department</span>
+<span class="kw">SELECT</span> department,
+       <span class="fn">COUNT</span>(*) <span class="kw">AS</span> total_emp,
+       <span class="fn">AVG</span>(salary) <span class="kw">AS</span> avg_salary,
+       <span class="fn">MAX</span>(salary) <span class="kw">AS</span> top_salary
+<span class="kw">FROM</span> employees
+<span class="kw">GROUP BY</span> department;
+
+<span class="cm">-- Departments with more than 5 employees</span>
+<span class="kw">SELECT</span> department, <span class="fn">COUNT</span>(*) <span class="kw">AS</span> cnt
+<span class="kw">FROM</span> employees
+<span class="kw">GROUP BY</span> department
+<span class="kw">HAVING</span> <span class="fn">COUNT</span>(*) > <span class="num">5</span>
+<span class="kw">ORDER BY</span> cnt <span class="kw">DESC</span>;`,
+    qna:[
+      {q:"What is the order of execution of a SQL query?",a:"SQL executes in this order: <strong>FROM → JOIN → WHERE → GROUP BY → HAVING → SELECT → ORDER BY → LIMIT</strong>. This is why you can't use a SELECT alias in WHERE (WHERE runs before SELECT is evaluated), but you can use it in ORDER BY. Understanding this order helps debug complex queries."},
+      {q:"Find the second highest salary in a table.",a:"Use: <code>SELECT MAX(salary) FROM employees WHERE salary < (SELECT MAX(salary) FROM employees);</code> Or using LIMIT: <code>SELECT salary FROM employees ORDER BY salary DESC LIMIT 1 OFFSET 1;</code> The subquery approach is more portable across databases."}
+    ]
+  },
+  {
+    name:"Subqueries & Indexes",tag:"Advanced",color:"#ef4444",
+    explain:`A <strong>subquery</strong> is a query nested inside another query. It can appear in SELECT, FROM, or WHERE clauses.
+<strong>Indexes</strong> are database objects that speed up data retrieval. Like a book's index — instead of reading every page, you jump to the right location.`,
+    def:`A subquery is an inner query used inside another SQL statement. An index is a data structure that improves the speed of data retrieval operations on a database table.`,
+    code:`<span class="cm">-- Subquery in WHERE: employees with above avg salary</span>
+<span class="kw">SELECT</span> name, salary
+<span class="kw">FROM</span> employees
+<span class="kw">WHERE</span> salary > (<span class="kw">SELECT</span> <span class="fn">AVG</span>(salary) <span class="kw">FROM</span> employees);
+
+<span class="cm">-- Subquery in FROM (derived table)</span>
+<span class="kw">SELECT</span> dept, avg_sal
+<span class="kw">FROM</span> (<span class="kw">SELECT</span> department <span class="kw">AS</span> dept,
+             <span class="fn">AVG</span>(salary) <span class="kw">AS</span> avg_sal
+      <span class="kw">FROM</span> employees
+      <span class="kw">GROUP BY</span> department) <span class="kw">AS</span> dept_avg
+<span class="kw">WHERE</span> avg_sal > <span class="num">40000</span>;
+
+<span class="cm">-- Create index for faster search</span>
+<span class="kw">CREATE INDEX</span> idx_email <span class="kw">ON</span> users(email);`,
+    qna:[
+      {q:"What is the difference between a subquery and a JOIN?",a:"Both combine data from multiple places, but differently. A <strong>JOIN</strong> combines columns from multiple tables horizontally. A <strong>subquery</strong> is used when the result of an inner query is used as a condition or input for the outer query. JOINs are usually faster. Use subqueries when the logic is clearer or when you need a single value as a filter condition."},
+      {q:"What is an index and when should you NOT use it?",a:"An index speeds up SELECT queries by creating a sorted data structure for a column. But you should avoid indexes on: columns with very low cardinality (e.g., a gender column with only M/F), small tables (full scan is faster), and columns that are frequently updated (because indexes must be updated too, slowing writes). Too many indexes slow down INSERT/UPDATE/DELETE."}
+    ]
+  },
+];
+
+const oopsTopics = [
+  {
+    name:"Classes & Objects",tag:"Foundation",color:"#f59e0b",
+    explain:`<strong>Class</strong> is a blueprint or template. <strong>Object</strong> is an instance created from that blueprint. In Python, everything is an object. A class has <strong>attributes</strong> (data) and <strong>methods</strong> (functions).
+The <strong>__init__</strong> method is the constructor — called automatically when an object is created.`,
+    def:`A class is a user-defined data type that bundles data (attributes) and behavior (methods). An object is a specific instance of a class with its own state.`,
+    code:`<span class="kw">class</span> <span class="cls">Employee</span>:
+    company = <span class="str">"Zoho"</span>  <span class="cm"># Class attribute</span>
+
+    <span class="kw">def</span> <span class="fn">__init__</span>(<span class="kw">self</span>, name, salary):
+        <span class="kw">self</span>.name = name      <span class="cm"># Instance attribute</span>
+        <span class="kw">self</span>.salary = salary
+
+    <span class="kw">def</span> <span class="fn">display</span>(<span class="kw">self</span>):
+        <span class="fn">print</span>(<span class="fn">f</span><span class="str">"{self.name} at {self.company} earns ₹{self.salary}"</span>)
+
+<span class="cm"># Creating objects</span>
+e1 = <span class="cls">Employee</span>(<span class="str">"Ravi"</span>, <span class="num">50000</span>)
+e2 = <span class="cls">Employee</span>(<span class="str">"Priya"</span>, <span class="num">65000</span>)
+e1.<span class="fn">display</span>()  <span class="cm"># Ravi at Zoho earns ₹50000</span>`,
+    qna:[
+      {q:"What is the difference between a class attribute and an instance attribute?",a:"A <strong>class attribute</strong> is shared across all instances — defined at the class level. Changing it changes it for all objects. An <strong>instance attribute</strong> is unique to each object — defined inside __init__ with self. If you change an instance attribute for one object, it doesn't affect others."},
+      {q:"What is 'self' in Python?",a:"<strong>self</strong> is a reference to the current instance of the class. It's the first parameter in every instance method. Through self, methods can access and modify the object's attributes. Python automatically passes the current object as self when you call a method — you don't pass it manually."}
+    ]
+  },
+  {
+    name:"Inheritance",tag:"Reusability",color:"#10b981",
+    explain:`<strong>Inheritance</strong> allows a child class to reuse attributes and methods from a parent class. This promotes code reuse.
+Python supports: <strong>Single, Multiple, Multilevel, Hierarchical</strong> inheritance.
+<strong>super()</strong> is used to call the parent class's method from the child class.`,
+    def:`Inheritance is an OOP mechanism where a child class derives properties and behavior from a parent class, enabling code reuse and a parent-child relationship between classes.`,
+    code:`<span class="kw">class</span> <span class="cls">Animal</span>:
+    <span class="kw">def</span> <span class="fn">__init__</span>(<span class="kw">self</span>, name):
+        <span class="kw">self</span>.name = name
+
+    <span class="kw">def</span> <span class="fn">speak</span>(<span class="kw">self</span>):
+        <span class="fn">print</span>(<span class="str">"Some sound"</span>)
+
+<span class="kw">class</span> <span class="cls">Dog</span>(<span class="cls">Animal</span>):  <span class="cm"># Inherits from Animal</span>
+    <span class="kw">def</span> <span class="fn">speak</span>(<span class="kw">self</span>):  <span class="cm"># Override parent method</span>
+        <span class="fn">print</span>(<span class="fn">f</span><span class="str">"{self.name} says: Woof!"</span>)
+
+<span class="kw">class</span> <span class="cls">GuideDog</span>(<span class="cls">Dog</span>):  <span class="cm"># Multilevel</span>
+    <span class="kw">def</span> <span class="fn">guide</span>(<span class="kw">self</span>):
+        <span class="fn">print</span>(<span class="fn">f</span><span class="str">"{self.name} is guiding."</span>)
+
+d = <span class="cls">Dog</span>(<span class="str">"Bruno"</span>)
+d.<span class="fn">speak</span>()   <span class="cm"># Bruno says: Woof!</span>`,
+    qna:[
+      {q:"What is the difference between method overriding and method overloading?",a:"<strong>Method Overriding</strong> — child class redefines a method from the parent with the same name and signature. It happens at runtime (runtime polymorphism). <strong>Method Overloading</strong> — same method name but different parameter counts/types. Python doesn't support true overloading, but you can simulate it using default arguments or *args."},
+      {q:"What does super() do?",a:"<strong>super()</strong> calls the parent class's method from inside a child class. It's used when you want to extend (not replace) the parent's behavior. Example: In a child __init__, you can call super().__init__() to run the parent's initialization and then add extra initialization code for the child. This avoids code duplication."}
+    ]
+  },
+  {
+    name:"Encapsulation & Abstraction",tag:"Protection",color:"#8b5cf6",
+    explain:`<strong>Encapsulation</strong> bundles data and methods together and restricts direct access using access modifiers:
+- Public: accessible everywhere
+- Protected: _var (convention, accessible in subclasses)
+- Private: __var (name-mangled, not directly accessible)
+<strong>Abstraction</strong> hides implementation details, showing only essential features.`,
+    def:`Encapsulation is protecting internal data by controlling access. Abstraction is hiding complex implementation and exposing only what's necessary.`,
+    code:`<span class="kw">from</span> abc <span class="kw">import</span> ABC, abstractmethod
+
+<span class="kw">class</span> <span class="cls">BankAccount</span>:
+    <span class="kw">def</span> <span class="fn">__init__</span>(<span class="kw">self</span>, balance):
+        <span class="kw">self</span>.__balance = balance  <span class="cm"># Private</span>
+
+    <span class="kw">def</span> <span class="fn">deposit</span>(<span class="kw">self</span>, amount):
+        <span class="kw">if</span> amount > <span class="num">0</span>:
+            <span class="kw">self</span>.__balance += amount
+
+    <span class="kw">def</span> <span class="fn">get_balance</span>(<span class="kw">self</span>):
+        <span class="kw">return</span> <span class="kw">self</span>.__balance
+
+<span class="cm"># Abstraction using ABC</span>
+<span class="kw">class</span> <span class="cls">Shape</span>(<span class="cls">ABC</span>):
+    <span class="kw">@abstractmethod</span>
+    <span class="kw">def</span> <span class="fn">area</span>(<span class="kw">self</span>): <span class="kw">pass</span>
+
+<span class="kw">class</span> <span class="cls">Circle</span>(<span class="cls">Shape</span>):
+    <span class="kw">def</span> <span class="fn">area</span>(<span class="kw">self</span>): <span class="kw">return</span> <span class="num">3.14</span> * <span class="num">5</span>**<span class="num">2</span>`,
+    qna:[
+      {q:"What is the difference between encapsulation and abstraction?",a:"<strong>Encapsulation</strong> is about protection — bundling data and methods together and restricting access. It's about HOW data is stored (using private variables, getter/setter). <strong>Abstraction</strong> is about simplification — hiding the complex implementation and showing only what the user needs. Example: When you drive a car, you use the steering wheel (abstraction) without knowing the engine internals (hidden implementation)."},
+      {q:"Can you access private attributes in Python?",a:"Not directly, but Python uses name mangling — a private variable __var becomes _ClassName__var. So you can technically access it as obj._ClassName__var. But this breaks encapsulation and is bad practice. The correct way is to provide public methods (getters/setters) or use the @property decorator."}
+    ]
+  },
+  {
+    name:"Polymorphism",tag:"Flexibility",color:"#ef4444",
+    explain:`<strong>Polymorphism</strong> means "many forms." The same interface works differently for different types.
+Types: <strong>Compile-time</strong> (method overloading) and <strong>Runtime</strong> (method overriding). In Python, polymorphism is achieved through method overriding and duck typing — "if it quacks like a duck, it's a duck."`,
+    def:`Polymorphism allows objects of different types to be treated through the same interface. The same method name behaves differently based on the object calling it.`,
+    code:`<span class="kw">class</span> <span class="cls">Cat</span>:
+    <span class="kw">def</span> <span class="fn">sound</span>(<span class="kw">self</span>): <span class="fn">print</span>(<span class="str">"Meow"</span>)
+
+<span class="kw">class</span> <span class="cls">Dog</span>:
+    <span class="kw">def</span> <span class="fn">sound</span>(<span class="kw">self</span>): <span class="fn">print</span>(<span class="str">"Woof"</span>)
+
+<span class="kw">class</span> <span class="cls">Bird</span>:
+    <span class="kw">def</span> <span class="fn">sound</span>(<span class="kw">self</span>): <span class="fn">print</span>(<span class="str">"Tweet"</span>)
+
+<span class="cm"># Polymorphism: same interface, different behavior</span>
+animals = [<span class="cls">Cat</span>(), <span class="cls">Dog</span>(), <span class="cls">Bird</span>()]
+<span class="kw">for</span> animal <span class="kw">in</span> animals:
+    animal.<span class="fn">sound</span>()  <span class="cm"># Meow, Woof, Tweet</span>
+
+<span class="cm"># Duck typing: works if method exists</span>
+<span class="kw">def</span> <span class="fn">make_sound</span>(obj):
+    obj.<span class="fn">sound</span>()  <span class="cm"># Works for any object with sound()</span>`,
+    qna:[
+      {q:"What is duck typing in Python?",a:"Duck typing is Python's approach to polymorphism. It means Python doesn't check the type of an object — it just checks if the object has the required method or attribute. The phrase comes from: 'If it walks like a duck and quacks like a duck, it's a duck.' So any class that has a .sound() method can be passed to a function that calls .sound() — regardless of its type."},
+      {q:"Explain runtime polymorphism with a real example.",a:"Runtime polymorphism happens when the same method name produces different results depending on which class's object calls it, and this is resolved at runtime. Example: A payment system with a base class Payment and child classes CreditCard, UPI, NetBanking — all have a process_payment() method. When you loop through payment objects and call process_payment(), each executes its own version."}
+    ]
+  },
+];
+
+const hrData = [
+  {q:"Tell me about yourself.",
+   a:`Start with your name, education, and branch. Then mention 1-2 relevant skills (Python, SQL, OOP). Add a project or internship. End with why you want this role.
+
+<strong>Example:</strong> "My name is [Name]. I'm a final-year B.E. Computer Science student from [College]. I have strong knowledge in Python, SQL, and OOP concepts. I've built a [mention a project] where I used Python and MySQL. I'm very interested in Zoho because of its product innovation and the opportunity to work on real-world applications that impact millions of users."`,
+   tip:"Keep it under 90 seconds. End by connecting your background to the company."},
+  {q:"Why do you want to join Zoho?",
+   a:`Don't just say 'good company'. Be specific about Zoho.
+
+<strong>Say:</strong> "Zoho builds world-class software products entirely in-house, which is rare. I'm excited about the product-first engineering culture. Zoho CRM and Zoho Creator solve real business problems. I want to be part of a team that ships products used by 100 million+ users globally. Also, Zoho's policy of no external funding shows strong independence and long-term thinking."`,
+   tip:"Research Zoho's products before the interview. Mention 1-2 specific products."},
+  {q:"What are your strengths and weaknesses?",
+   a:`<strong>Strength:</strong> "My biggest strength is problem-solving. When I face a bug or challenge, I break it down systematically — understand the problem, research solutions, implement, and test. I enjoy that process."
+
+<strong>Weakness:</strong> "I sometimes spend too much time trying to perfect my code instead of moving forward. I've been working on this by setting time limits for tasks and reviewing progress regularly."`,
+   tip:"Never say 'I work too hard' as a weakness — it sounds fake. Give a real one and show you're working on it."},
+  {q:"Where do you see yourself in 5 years?",
+   a:`"In 5 years, I see myself as a senior software developer with deep expertise in product development. I want to contribute to building scalable, impactful software — ideally at a company like Zoho where I can grow from coding to architecture to leading a team. I want to be known as someone who writes clean code, mentors juniors, and drives product quality."`,
+   tip:"Show ambition but keep it aligned with the company's growth path."},
+  {q:"Tell me about a challenge you faced and how you solved it.",
+   a:`Use the <strong>STAR method</strong>: Situation → Task → Action → Result.
+
+<strong>Example:</strong> "In my final project, our database queries were very slow due to large data. (Situation) My task was to optimize performance. (Task) I analyzed the queries, added indexes on frequently searched columns, and rewrote a few queries to use JOINs instead of nested subqueries. (Action) Query time reduced by 70%. (Result) This taught me the importance of database optimization."`,
+   tip:"Always end with what you learned. Interviewers love self-awareness."},
+  {q:"Are you comfortable with relocation and working in shifts?",
+   a:`"Yes, I am open to relocation. I understand that software development sometimes requires flexible timing, especially when working across time zones or on critical releases. I'm ready to adapt."`,
+   tip:"Be honest. If you have constraints, mention them politely and offer alternatives."},
+  {q:"What is your expected salary?",
+   a:`"As a fresher, I'm primarily looking for a great learning environment and growth opportunity. I'm open to the standard package Zoho offers for this role. If there's flexibility, I'd expect compensation in line with industry standards for this position."`,
+   tip:"Don't give a number first as a fresher. Show you value the opportunity over just money."},
+  {q:"Do you have any questions for us?",
+   a:`Always ask at least one question — it shows interest.
+
+<strong>Good questions:</strong>
+• "What does the first 3 months look like for someone in this role?"
+• "Which team would I be working with, and what product does that team focus on?"
+• "What does growth look like for developers at Zoho?"`,
+   tip:"Never ask about salary or leave policy in the first round. Ask about work, team, and growth."},
+];
+
+const zohoProducts = {
+  main: [
+    {id:"crm",icon:"💼",name:"Zoho CRM",cat:"Customer Relationship Management",color:"#ef4444"},
+    {id:"creator",icon:"🔧",name:"Zoho Creator",cat:"Low-Code App Development Platform",color:"#3b82f6"},
+    {id:"desk",icon:"🎧",name:"Zoho Desk",cat:"Customer Support & Helpdesk",color:"#10b981"},
+    {id:"analytics",icon:"📊",name:"Zoho Analytics",cat:"Business Intelligence & Reporting",color:"#f59e0b"},
+  ],
+  extra: [
+    {id:"books",icon:"📚",name:"Zoho Books",cat:"Accounting & Finance",color:"#8b5cf6"},
+    {id:"projects",icon:"📋",name:"Zoho Projects",cat:"Project Management",color:"#06b6d4"},
+    {id:"mail",icon:"📧",name:"Zoho Mail",cat:"Business Email Suite",color:"#6366f1"},
+    {id:"cliq",icon:"💬",name:"Zoho Cliq",cat:"Team Messaging & Collaboration",color:"#f97316"},
+  ]
+};
+
+const zohoDetails = {
+  crm: {
+    icon:"💼", name:"Zoho CRM", tagline:"World's favourite CRM — used by 250,000+ businesses",
+    overview:`Zoho CRM is a cloud-based Customer Relationship Management tool that helps businesses manage leads, contacts, deals, and customer interactions. It's the flagship product of Zoho and one of the most popular CRMs globally.`,
+    realworld:`A sales team at a company uses Zoho CRM to track every prospect. When someone fills a form on their website, a lead is automatically created in CRM. The sales rep gets notified, calls the lead, logs the conversation, and moves the deal through stages: Lead → Qualified → Proposal → Won/Lost. The manager sees a real-time dashboard of the entire pipeline.`,
+    features:["Leads & Contacts management","Sales pipeline (Kanban view)","Email integration & automation","Reports & Dashboards","Workflow automation","AI assistant — Zia","Mobile CRM app","Integration with Zoho Desk, Analytics"],
+    levels:[
+      {l:"basic",text:"Zoho CRM stores information about customers (contacts), potential customers (leads), and business deals (opportunities/deals). It organizes the sales process from first contact to closed deal."},
+      {l:"mid",text:"Modules: Leads → Contacts → Accounts → Deals. Workflow rules automate tasks like sending an email when a deal is created. Blueprints define sales processes step by step. Webforms capture leads from website."},
+      {l:"deep",text:"Zia AI predicts lead conversion probability. SalesSignals track customer behavior (email opens, website visits). Canvas view lets you customize module layout. API available for custom integrations. GDPR compliance controls built-in."},
+    ],
+    qna:[
+      {l:"basic",q:"What is Zoho CRM and what problem does it solve?",a:"Zoho CRM is a cloud-based Customer Relationship Management tool. It solves the problem of managing customer data scattered across spreadsheets, emails, and sticky notes. It centralizes all customer information — contacts, deals, communication history — in one place, helping sales teams close more deals faster."},
+      {l:"mid",q:"What is the difference between a Lead and a Contact in Zoho CRM?",a:"A <strong>Lead</strong> is an unqualified potential customer — someone who showed interest but hasn't been verified yet. After the sales team qualifies the lead (confirms they're a real business opportunity), they convert it. This conversion creates a <strong>Contact</strong> (the person), an <strong>Account</strong> (their company), and a <strong>Deal</strong> (the business opportunity). Leads are top of funnel; Contacts are qualified prospects."},
+      {l:"mid",q:"What are Workflow Rules in Zoho CRM?",a:"Workflow rules are automated actions triggered by specific conditions. Example: When a deal amount exceeds ₹1,00,000, automatically assign it to a senior sales rep and send a notification email to the manager. Workflow has three parts: Trigger (when), Conditions (if), Actions (then — send email, create task, update field, etc.). It reduces manual work."},
+      {l:"deep",q:"What is Zia in Zoho CRM?",a:"Zia is Zoho's AI/ML assistant built into CRM. It predicts lead conversion probability based on past data, suggests the best time to contact a lead, detects anomalies in sales data, automatically enriches contact records, and answers natural language questions like 'How many deals closed this month?' It uses Zoho's own AI engine and doesn't rely on third-party AI."},
+      {l:"deep",q:"How does Zoho CRM integrate with other Zoho products?",a:"Zoho CRM integrates natively with Zoho Desk (customer support tickets linked to CRM contacts), Zoho Analytics (advanced sales reporting), Zoho Books (invoicing and payments linked to deals), Zoho Campaigns (email marketing), and Zoho SalesIQ (live chat). These integrations are seamless within the Zoho ecosystem and don't require third-party middleware."},
+    ]
+  },
+  creator: {
+    icon:"🔧", name:"Zoho Creator", tagline:"Low-code platform to build custom business apps",
+    overview:`Zoho Creator is a low-code application development platform that lets you build custom web and mobile apps without deep programming expertise. It uses a drag-and-drop builder and a scripting language called Deluge.`,
+    realworld:`A logistics company needs to track deliveries but doesn't want to buy expensive software. They use Zoho Creator to build a custom delivery tracking app in 2 weeks — with forms for drivers to update status, reports for managers to view delivery performance, and an approval workflow for exceptions. No traditional software development needed.`,
+    features:["Drag-and-drop form builder","Deluge scripting language","Database (reports/views)","Workflow automation","REST API integration","Mobile app auto-generation","Role-based access control","Pre-built app templates"],
+    levels:[
+      {l:"basic",text:"Zoho Creator lets non-developers build apps using a visual builder. You create forms (data input), reports (data display), and workflows (automation) without writing complex code."},
+      {l:"mid",text:"Deluge (Data Enriched Language for the Universal Grid Environment) is Creator's scripting language. It's used for custom logic: validating inputs, calling external APIs, sending notifications, and data processing. Creator generates a mobile app automatically."},
+      {l:"deep",text:"Creator uses a multi-tenant cloud architecture. Apps can expose REST APIs. Zoho Creator connects to external databases via JDBC, integrates with Zoho CRM/Desk via connections, and supports OAuth for secure third-party API calls. Advanced users build ERP-level systems."},
+    ],
+    qna:[
+      {l:"basic",q:"What is Zoho Creator and how is it different from traditional development?",a:"Zoho Creator is a low-code platform where you build apps visually — drag and drop fields, set up reports, create workflows — with minimal coding. Traditional development requires writing hundreds of lines of code, setting up servers, and months of effort. Creator lets you build the same app in days. For complex logic, you use Deluge scripting, which is simpler than Java or Python."},
+      {l:"mid",q:"What is Deluge scripting in Zoho Creator?",a:"Deluge (Data Enriched Language for the Universal Grid Environment) is Zoho Creator's built-in scripting language. It looks like Python — simple, readable syntax. You use it in Creator to write custom logic: validating form inputs, fetching data from other modules or APIs, updating records conditionally, sending emails, and more. Example: When a leave request is submitted, Deluge script checks if the employee has enough leave balance before approving."},
+      {l:"mid",q:"How does workflow automation work in Zoho Creator?",a:"Workflows in Creator trigger actions based on events. Types of triggers: On Submit (when a form is submitted), Scheduled (runs at specific times), On Change (when a field value changes). Actions can include: running a Deluge script, sending email/SMS notifications, creating/updating records, calling an external API, or assigning tasks. This removes manual data entry and follow-up work."},
+      {l:"deep",q:"How can Zoho Creator integrate with external systems?",a:"Creator integrates externally through: REST API calls (using Deluge's invokeurl task to call any external API), Connections (pre-built secure integrations with Google, Salesforce, Slack), Webhooks (sending data to external apps when events happen), and Zoho's own products via native connections. It also exposes its own APIs so external apps can read/write Creator data. JDBC connections allow linking to SQL databases directly."},
+      {l:"deep",q:"Explain the difference between a Form and a Report in Zoho Creator.",a:"A <strong>Form</strong> is the data input interface — users fill fields and submit data, which gets stored in Creator's database. It's like a data entry screen. A <strong>Report</strong> is the data display interface — it retrieves stored records and shows them as a list, grid, chart, calendar, or kanban. Reports can have filters, sorting, and summary rows. A form collects; a report displays. Together they form the complete data flow of any Creator app."},
+    ]
+  },
+  desk: {
+    icon:"🎧", name:"Zoho Desk", tagline:"Context-aware customer service software",
+    overview:`Zoho Desk is a cloud-based customer support helpdesk platform. It helps support teams manage customer tickets, automate responses, and track performance — all in one place.`,
+    realworld:`An e-commerce company receives 500 support queries daily via email, chat, and social media. Zoho Desk converts all of them into tickets, automatically assigns them to the right agents, tracks resolution time, sends auto-responses for common questions, and gives the manager a dashboard showing team performance and customer satisfaction scores.`,
+    features:["Multi-channel ticket management","Automation (workflows, blueprints)","Self-service knowledge base","AI assistant — Zia for support","SLA (Service Level Agreement) management","Reports & dashboards","CRM integration","Mobile app for agents"],
+    levels:[
+      {l:"basic",text:"Zoho Desk is customer support software. Customers raise tickets (issues) via email, chat, phone, or social media. Support agents see all tickets in one inbox, reply, and resolve them. Managers track how fast issues are solved."},
+      {l:"mid",text:"Tickets have priorities, statuses (Open → In Progress → Resolved), and SLAs (time limits for response and resolution). Automation rules assign tickets, escalate overdue ones, and send notifications. The Knowledge Base lets customers self-solve issues via FAQs and articles."},
+      {l:"deep",text:"Blueprint in Desk defines the exact support process step-by-step. Zia AI suggests articles to agents, predicts ticket sentiment, auto-tags tickets. Desk integrates with Zoho CRM so agents see the customer's full purchase history while responding. Reports show First Response Time, Resolution Time, CSAT scores, and agent performance metrics."},
+    ],
+    qna:[
+      {l:"basic",q:"What is a ticket in Zoho Desk?",a:"A ticket is a customer query or issue that needs resolution. When a customer emails support or chats with an agent, Zoho Desk automatically creates a ticket. Each ticket has a unique ID, priority (Low/Medium/High/Urgent), status (Open/On Hold/Resolved/Closed), and is assigned to an agent. The ticket tracks the entire conversation history until the issue is resolved."},
+      {l:"mid",q:"What is an SLA in Zoho Desk?",a:"SLA stands for Service Level Agreement. It defines the maximum time within which a ticket must be responded to and resolved. Example: High priority tickets must get a first response within 1 hour and be resolved within 8 hours. If an agent misses the SLA, Zoho Desk automatically escalates the ticket — notifying managers or reassigning it. SLAs ensure customer queries don't go unanswered for too long."},
+      {l:"mid",q:"What is the Knowledge Base feature in Zoho Desk?",a:"The Knowledge Base is a self-service portal where customers can find answers without contacting support. It contains articles, FAQs, and how-to guides organized into categories. When a customer starts typing their issue, the Help Center suggests relevant articles. This reduces ticket volume — customers solve issues themselves. Agents also use knowledge base articles to answer tickets faster."},
+      {l:"deep",q:"How does the Blueprint feature work in Zoho Desk?",a:"Blueprint in Zoho Desk is a visual process designer that defines the exact workflow a ticket must follow from creation to resolution. You define: States (Open, Awaiting Customer Response, Escalated), Transitions (the steps to move between states), and Conditions (who can trigger each transition and what fields are required). For example, an agent can't mark a ticket 'Resolved' without filling the 'Resolution Note' field. Blueprint enforces consistent, high-quality support processes."},
+      {l:"deep",q:"How does Zia AI help in Zoho Desk?",a:"Zia is Zoho's AI assistant in Desk. It analyzes incoming tickets and: suggests relevant Knowledge Base articles to agents, auto-tags tickets by category (billing, technical, shipping), detects the sentiment of the customer (frustrated, neutral, happy) so agents can prioritize accordingly, and predicts ticket anomalies. Zia also powers the Answer Bot in the Help Center, which answers customer questions automatically using Knowledge Base content before a ticket is even created."},
+    ]
+  },
+  analytics: {
+    icon:"📊", name:"Zoho Analytics", tagline:"Self-service BI & data analytics platform",
+    overview:`Zoho Analytics is a self-service Business Intelligence (BI) tool that lets you connect data from multiple sources, create reports and dashboards, and extract insights — without needing a data engineer.`,
+    realworld:`A retail chain imports sales data from their POS system, HR data from their HRMS, and financial data from Zoho Books — all into Zoho Analytics. The CFO views a real-time dashboard showing revenue by store, revenue vs target, and profit margins. The HR manager tracks attendance and performance on a separate dashboard. All from one tool.`,
+    features:["Connect 250+ data sources","Drag-and-drop report builder","Charts, pivots, summaries","AI analyst — Zia Insights","Scheduled reports via email","Embedded analytics API","Collaboration & sharing","Row-level security"],
+    levels:[
+      {l:"basic",text:"Zoho Analytics lets you upload data (Excel, CSV, databases) and create visual reports — bar charts, pie charts, tables — without writing code. It's like a very powerful Excel with better visuals and collaboration."},
+      {l:"mid",text:"You can blend data from multiple tables using Lookup columns (like SQL JOINs). Formula columns add calculated fields. Query tables allow writing SQL directly. Reports can be embedded into other websites or apps using the Analytics API."},
+      {l:"deep",text:"Zoho Analytics uses a columnar data storage engine for fast aggregations. Zia AI auto-generates insights narratives ('Revenue grew 18% MoM driven by Chennai region'). It integrates with Zoho CRM, Desk, Books natively. Advanced users build predictive models using the ML module. Data is secured with row-level security (each user sees only their data)."},
+    ],
+    qna:[
+      {l:"basic",q:"What is the difference between a Report and a Dashboard in Zoho Analytics?",a:"A <strong>Report</strong> is a single visualization — a chart, table, pivot, or summary that answers one specific question (e.g., 'Monthly sales by region'). A <strong>Dashboard</strong> is a collection of multiple reports displayed together on one screen — giving a complete business overview at a glance. You build individual reports first, then pin them to a dashboard. Dashboards are what executives view; reports are what analysts create."},
+      {l:"mid",q:"What is a Lookup column in Zoho Analytics?",a:"A Lookup column is how you join two tables in Zoho Analytics — similar to a foreign key join in SQL. Example: Your Orders table has a customer_id column, and your Customers table has id and customer_name. You create a Lookup from Orders.customer_id to Customers.id. Now in reports, you can use customer_name from the Customers table while analyzing order data. It enables cross-table analysis without writing SQL."},
+      {l:"mid",q:"How do you share reports in Zoho Analytics?",a:"You can share reports in multiple ways: Share with specific users (they log in and view), embed reports into websites using the Embed API (iFrame), export as PDF/Excel for email distribution, or set up scheduled email reports that automatically send every day/week/month. Permission levels let you control whether others can just view, or also create and edit reports."},
+      {l:"deep",q:"What is the Zia AI feature in Zoho Analytics?",a:"Zia in Zoho Analytics acts as an AI-powered data analyst. You can ask questions in plain English: 'What was revenue last quarter compared to the same quarter last year?' and Zia generates the chart and a written narrative explaining the trend. It also proactively surfaces insights — like detecting an unusual spike in support tickets or a drop in sales conversion — without you asking. This makes analytics accessible to non-technical business users."},
+      {l:"deep",q:"How does Zoho Analytics handle data security?",a:"Zoho Analytics provides multiple security layers: Row-level security ensures each user only sees data they're authorized for (e.g., regional managers see only their region's data). Column-level security hides sensitive fields. Data is encrypted at rest and in transit. Two-factor authentication is supported. Audit logs track who accessed and changed what data. For compliance, it supports GDPR, HIPAA, and SOC2 requirements."},
+    ]
+  },
+  books: {
+    icon:"📚", name:"Zoho Books", tagline:"Online accounting for growing businesses",
+    overview:`Zoho Books is a cloud-based accounting and finance management platform. It handles invoicing, expense tracking, bank reconciliation, GST compliance, and financial reporting.`,
+    realworld:`A small business owner uses Zoho Books to send invoices to clients, record expenses, reconcile their bank account monthly, and file GST returns. They can see their Profit & Loss statement anytime without calling an accountant.`,
+    features:["Invoicing & estimates","Expense tracking","Bank reconciliation","GST/tax compliance","Inventory management","Multi-currency support","Financial reports","Client portal"],
+    levels:[
+      {l:"basic",text:"Zoho Books records all financial transactions: sales (invoices), purchases (bills), and expenses. It automatically calculates taxes and generates standard financial reports like Profit & Loss, Balance Sheet, and Cash Flow statements."},
+      {l:"mid",text:"Bank reconciliation matches your bank statement transactions with recorded transactions to ensure accuracy. GST filing module auto-calculates CGST, SGST, IGST based on transaction type. Recurring invoices automate billing for subscription customers."},
+      {l:"deep",text:"Zoho Books integrates with Zoho CRM (deals convert to invoices), Zoho Inventory, and Zoho Payroll. It supports multi-currency transactions with automatic exchange rate updates. Advanced automation workflows trigger invoice creation, payment reminders, and approval flows. REST APIs allow custom ERP integrations."},
+    ],
+    qna:[
+      {l:"basic",q:"What is the main purpose of Zoho Books?",a:"Zoho Books is an online accounting tool that helps businesses track their money in and out. It manages invoices sent to customers (accounts receivable), bills from suppliers (accounts payable), and all expenses. It automatically generates financial reports — so business owners always know their current financial health without manually maintaining spreadsheets."},
+      {l:"mid",q:"How does Zoho Books handle GST in India?",a:"Zoho Books is GST-ready for Indian businesses. When you create an invoice, you specify the GST rate. Books automatically splits it into CGST+SGST (intra-state) or IGST (inter-state). It generates GSTR-1, GSTR-3B, and other return reports that you can directly file or export to the GST portal. It also maintains HSN/SAC codes for products and services as required by GST law."},
+      {l:"deep",q:"What is bank reconciliation and how does Zoho Books handle it?",a:"Bank reconciliation is the process of matching your Zoho Books transaction records with your actual bank statement to ensure they match. Zoho Books connects directly to your bank via bank feeds (automatic transaction import). It uses AI to suggest matches between bank entries and recorded transactions. Unmatched entries are flagged for manual review. This ensures your books accurately reflect reality and catches any missing or duplicate entries."},
+    ]
+  },
+  projects: {
+    icon:"📋", name:"Zoho Projects", tagline:"Online project management & collaboration tool",
+    overview:`Zoho Projects is a project management tool for planning, tracking, and collaborating on projects. It supports task management, Gantt charts, timesheets, and team collaboration.`,
+    realworld:`A software development team uses Zoho Projects to manage their sprint. They create tasks, assign them to developers, set deadlines, and track progress on a Gantt chart. When a task is complete, the developer logs hours in timesheets. The project manager sees the overall progress in a dashboard.`,
+    features:["Task & milestone management","Gantt charts","Timesheets & billing","Issue tracker","Document storage","Team collaboration (feeds)","Resource utilization","Integration with Zoho CRM"],
+    levels:[
+      {l:"basic",text:"Zoho Projects organizes work into Projects → Milestones → Task Lists → Tasks. Each task has an owner, due date, and status. Team members update tasks; managers see progress on dashboards."},
+      {l:"mid",text:"Gantt chart shows task dependencies and critical path visually. Timesheets let team members log hours per task. Issue tracker manages bugs and defects separately from tasks. Blueprints define the exact workflow for tasks."},
+      {l:"deep",text:"Resource utilization reports show if team members are over/under-allocated. Baseline comparison tracks actual vs planned timelines. Zoho Projects integrates with GitHub/Bitbucket for commit tracking. REST API allows custom integrations."},
+    ],
+    qna:[
+      {l:"basic",q:"What is the difference between a Task and a Milestone in Zoho Projects?",a:"A <strong>Task</strong> is a specific actionable work item with a deadline — like 'Design login page' or 'Write unit tests.' A <strong>Milestone</strong> is a significant checkpoint or goal that marks the completion of a phase — like 'Phase 1: Design Complete' or 'MVP Launch.' Milestones don't have effort — they just mark that a set of tasks has been completed. Think of milestones as goals and tasks as the steps to reach them."},
+      {l:"mid",q:"What is a Gantt chart and why is it useful?",a:"A Gantt chart is a visual bar chart that shows all project tasks on a timeline. Each task appears as a bar — its position shows start/end dates, and its length shows duration. Dependencies between tasks are shown as arrows (Task B can't start until Task A finishes). It helps project managers immediately see: what's on track, what's delayed, what's blocking what, and the critical path (the sequence of tasks that determines project duration)."},
+    ]
+  },
+  mail: {
+    icon:"📧", name:"Zoho Mail", tagline:"Ad-free business email for teams",
+    overview:`Zoho Mail is a secure, ad-free business email hosting service. It provides custom domain email (name@yourcompany.com), with features built for professional teams.`,
+    realworld:`A startup sets up company email accounts (team@startupxyz.com) using Zoho Mail. Emails are organized with labels and filters. The team uses Streams (built-in messaging) to discuss emails as a team. All emails are stored securely with no third-party ads or data mining.`,
+    features:["Custom domain email","Streams (team discussion)","Email filters & folders","Calendar & Contacts built-in","eDiscovery & archiving","S/MIME email encryption","Mobile apps","No ads — ever"],
+    levels:[
+      {l:"basic",text:"Zoho Mail provides professional business email hosting. You get a custom domain email (you@company.com), inbox management tools, and business-grade security — all without any advertisements."},
+      {l:"mid",text:"Streams is a unique feature — team members can comment on emails without forwarding, keeping discussions organized. Admin controls allow the IT team to manage all company email accounts, set policies, and access email archives for compliance."},
+      {l:"deep",text:"Zoho Mail is hosted on Zoho's own infrastructure — not on Google or Microsoft servers. End-to-end encryption with S/MIME, eDiscovery for legal compliance, email retention policies, and audit logs are available for enterprise customers. It integrates with Zoho CRM to log email conversations against contacts."},
+    ],
+    qna:[
+      {l:"basic",q:"Why would a company use Zoho Mail instead of Gmail?",a:"Zoho Mail is ad-free — unlike Gmail which analyzes email content to serve ads, Zoho Mail has a strict no-ads policy. For businesses, this means sensitive business emails are never used for advertising purposes. Zoho Mail also integrates natively with the rest of the Zoho suite (CRM, Projects, Books). For companies that want data privacy and full control over their email infrastructure, Zoho Mail is a better choice."},
+      {l:"mid",q:"What is the Streams feature in Zoho Mail?",a:"Streams is Zoho Mail's built-in team collaboration feature. Instead of forwarding emails to colleagues and creating messy reply chains, you can '@mention' a colleague directly on an email thread. They see your comment in their Streams feed and can respond — without any external forwarding. It's like adding a Slack/Teams layer directly inside your inbox, keeping discussions organized and linked to the relevant email."},
+    ]
+  },
+  cliq: {
+    icon:"💬", name:"Zoho Cliq", tagline:"Real-time team messaging & collaboration",
+    overview:`Zoho Cliq is Zoho's team communication and collaboration platform — similar to Slack. It provides channels, direct messages, voice/video calls, and bot integrations.`,
+    realworld:`A company's engineering team uses Zoho Cliq for daily communication. They have channels like #dev-team, #bugs, #releases. When a new bug is filed in Zoho Desk, a bot automatically posts a message in #bugs. Developers discuss, share code snippets, and resolve issues — all in Cliq.`,
+    features:["Channels & direct messages","Voice & video calls","Screen sharing","Bots & automations","File sharing","Command center (/)","Integration with Zoho products","Message threading"],
+    levels:[
+      {l:"basic",text:"Zoho Cliq is like WhatsApp for work teams. You create channels for topics or teams (#marketing, #engineering), send direct messages, share files, and make voice/video calls — all in one app."},
+      {l:"mid",text:"Bots can be created to automate tasks — like a bot that posts daily standups or alerts when a new CRM deal is created. Custom slash commands (/standup, /leave-request) trigger workflows. Cliq integrates with Zoho projects to get task notifications."},
+      {l:"deep",text:"Cliq's architecture supports enterprise messaging with message retention policies, admin controls, and audit logs. The Cliq API allows building custom bots and integrating any external system. It supports SAML SSO for enterprise authentication and has end-to-end encryption for direct messages."},
+    ],
+    qna:[
+      {l:"basic",q:"What is the difference between a Channel and a Direct Message in Zoho Cliq?",a:"A <strong>Channel</strong> is a group conversation organized around a topic, team, or project — like #sales-team or #product-launches. Anyone who joins the channel can see and participate in the conversation. A <strong>Direct Message (DM)</strong> is a private one-on-one or small group conversation between specific people. Use channels for team-wide communication; use DMs for private or personal conversations."},
+      {l:"mid",q:"What are Bots in Zoho Cliq and how are they useful?",a:"Bots are automated assistants inside Cliq that can send messages, respond to commands, and integrate with external systems. For example: A CRM bot that posts in #sales channel whenever a deal is Won, a Daily Standup bot that asks team members their updates every morning and compiles them, or an Alert bot that notifies the DevOps channel when server CPU goes above 90%. Bots are built using Deluge scripting or Cliq's REST API."},
+    ]
+  }
+};
+
+// ================================================================
+// RENDER FUNCTIONS
+// ================================================================
+
+function renderTopics(topics, containerId, accentColor) {
+  const container = document.getElementById(containerId);
+  topics.forEach((t, i) => {
+    const card = document.createElement('div');
+    card.className = 'topic-card';
+    card.innerHTML = `
+      <div class="topic-header" onclick="toggleCard(this)">
+        <div class="topic-header-left">
+          <div class="topic-num" style="background:${t.color}22;color:${t.color}">${i+1}</div>
+          <div>
+            <div class="topic-name">${t.name}</div>
+          </div>
+          <div class="topic-tag">${t.tag}</div>
+        </div>
+        <div class="chevron">▾</div>
+      </div>
+      <div class="topic-body">
+        <div class="inner-tabs">
+          <div class="inner-tab active" onclick="switchInner(this,'explain')">📖 Explanation</div>
+          <div class="inner-tab" onclick="switchInner(this,'def')">📌 Definition</div>
+          <div class="inner-tab" onclick="switchInner(this,'code')">💻 Example</div>
+          <div class="inner-tab" onclick="switchInner(this,'qna')">❓ Interview Q&A</div>
+        </div>
+        <div class="inner-panel active" data-panel="explain">
+          <div class="explain-box">${t.explain}</div>
+        </div>
+        <div class="inner-panel" data-panel="def">
+          <div class="def-box">
+            <div class="def-label">📌 Definition</div>
+            ${t.def}
+          </div>
+        </div>
+        <div class="inner-panel" data-panel="code">
+          <div class="code-label">EXAMPLE PROGRAM</div>
+          <pre>${t.code}</pre>
+        </div>
+        <div class="inner-panel" data-panel="qna">
+          ${t.qna.map((q,qi)=>`
+            <div class="qna-item">
+              <div class="qna-q"><span class="q-badge">Q${qi+1}</span>${q.q}</div>
+              <div class="qna-a">${q.a}</div>
+            </div>
+          `).join('')}
+        </div>
+      </div>
+    `;
+    container.appendChild(card);
+  });
+}
+
+function toggleCard(header) {
+  const card = header.closest('.topic-card');
+  card.classList.toggle('open');
+}
+
+function switchInner(tab, panel) {
+  const body = tab.closest('.topic-body');
+  body.querySelectorAll('.inner-tab').forEach(t => t.classList.remove('active'));
+  body.querySelectorAll('.inner-panel').forEach(p => p.classList.remove('active'));
+  tab.classList.add('active');
+  body.querySelector(`[data-panel="${panel}"]`).classList.add('active');
+}
+
+function renderHR() {
+  const container = document.getElementById('hr-content');
+  hrData.forEach((item, i) => {
+    const card = document.createElement('div');
+    card.className = 'hr-card';
+    card.innerHTML = `
+      <div class="hr-q"><span class="hr-badge">Q${i+1}</span>${item.q}</div>
+      <div class="hr-a">
+        ${item.a.replace(/\n/g,'<br>')}
+        <div class="tip-box"><span class="tip-label">💡 PRO TIP &nbsp;</span>${item.tip}</div>
+      </div>
+    `;
+    container.appendChild(card);
+  });
+}
+
+function renderZohoProducts() {
+  ['main','extra'].forEach(type => {
+    const container = document.getElementById(`${type}-products`);
+    zohoProducts[type].forEach(p => {
+      const pill = document.createElement('div');
+      pill.className = 'product-pill';
+      pill.id = `pill-${p.id}`;
+      pill.onclick = () => showZohoDetail(p.id);
+      pill.innerHTML = `
+        <div class="product-icon">${p.icon}</div>
+        <div class="product-info">
+          <div class="product-name">${p.name}</div>
+          <div class="product-cat">${p.cat}</div>
+        </div>
+        <div style="color:var(--muted);font-size:18px">›</div>
+      `;
+      container.appendChild(pill);
+    });
+  });
+}
+
+function showZohoDetail(id) {
+  const d = zohoDetails[id];
+  if (!d) return;
+
+  document.getElementById('zoho-list').style.display = 'none';
+  const area = document.getElementById('zoho-detail-area');
+  
+  const levelLabel = {basic:'🟢 Basic',mid:'🟡 Intermediate',deep:'🔴 Deep'};
+  const levelClass = {basic:'l-basic',mid:'l-mid',deep:'l-deep'};
+
+  area.innerHTML = `
+    <button class="back-btn" onclick="hideZohoDetail()">← Back to Products</button>
+    <div class="zoho-hero">
+      <div class="zoho-hero-icon">${d.icon}</div>
+      <div>
+        <div class="zoho-hero-title">${d.name}</div>
+        <div class="zoho-hero-sub">${d.tagline}</div>
+      </div>
+    </div>
+
+    <div class="topic-card open" style="margin-bottom:16px">
+      <div class="topic-header" onclick="toggleCard(this)">
+        <div class="topic-header-left">
+          <div class="topic-num" style="background:rgba(0,212,255,0.1);color:var(--accent)">📋</div>
+          <div class="topic-name">Overview & Real-World Example</div>
+        </div>
+        <div class="chevron">▾</div>
+      </div>
+      <div class="topic-body">
+        <div style="padding:22px">
+          <div class="explain-box">${d.overview}</div>
+          <h4>🌍 Real-World Use Case</h4>
+          <div class="explain-box green">${d.realworld}</div>
+          <h4>⚡ Key Features</h4>
+          <div class="feature-grid">
+            ${d.features.map(f=>`<div class="feature-chip"><span>✓</span>${f}</div>`).join('')}
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="topic-card open" style="margin-bottom:16px">
+      <div class="topic-header" onclick="toggleCard(this)">
+        <div class="topic-header-left">
+          <div class="topic-num" style="background:rgba(124,58,237,0.1);color:var(--accent2)">📚</div>
+          <div class="topic-name">Basic → Intermediate → Deep Level</div>
+        </div>
+        <div class="chevron">▾</div>
+      </div>
+      <div class="topic-body">
+        <div style="padding:22px">
+          ${d.levels.map(lv=>`
+            <div class="def-box" style="margin-bottom:14px">
+              <span class="level-badge ${levelClass[lv.l]}">${levelLabel[lv.l]}</span>
+              <div style="margin-top:8px;font-size:14px;line-height:1.75">${lv.text}</div>
+            </div>
+          `).join('')}
+        </div>
+      </div>
+    </div>
+
+    <div class="topic-card open">
+      <div class="topic-header" onclick="toggleCard(this)">
+        <div class="topic-header-left">
+          <div class="topic-num" style="background:rgba(16,185,129,0.1);color:var(--accent3)">❓</div>
+          <div class="topic-name">Interview Q&A (Topic-wise)</div>
+        </div>
+        <div class="chevron">▾</div>
+      </div>
+      <div class="topic-body">
+        <div style="padding:22px">
+          ${d.qna.map((q,i)=>`
+            <div class="qna-item">
+              <div class="qna-q">
+                <span class="q-badge" style="background:${q.l==='basic'?'var(--accent3)':q.l==='mid'?'var(--accent4)':'var(--accent5)'}">
+                  ${levelLabel[q.l]}
+                </span>
+                ${q.q}
+              </div>
+              <div class="qna-a">${q.a}</div>
+            </div>
+          `).join('')}
+        </div>
+      </div>
+    </div>
+  `;
+  area.style.display='block';
+}
+
+function hideZohoDetail() {
+  document.getElementById('zoho-list').style.display = 'block';
+  document.getElementById('zoho-detail-area').style.display = 'none';
+}
+
+// ================================================================
+// TAB SWITCHING
+// ================================================================
+document.querySelectorAll('.tab').forEach(tab => {
+  tab.addEventListener('click', () => {
+    document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
+    document.querySelectorAll('.section').forEach(s=>s.classList.remove('active'));
+    tab.classList.add('active');
+    document.getElementById(tab.dataset.tab).classList.add('active');
+  });
+});
+
+// ================================================================
+// INIT
+// ================================================================
+renderTopics(pythonTopics, 'python-topics', '#3b82f6');
+renderTopics(sqlTopics, 'sql-topics', '#10b981');
+renderTopics(oopsTopics, 'oops-topics', '#f59e0b');
+renderHR();
+renderZohoProducts();
+</script>
+</body>
+</html>

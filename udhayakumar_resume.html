@@ -1,0 +1,567 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Udhayakumar V – Resume</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet"/>
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --navy: #0d2137;
+    --teal: #1a7b6e;
+    --gold: #c9963a;
+    --light: #f4f7f6;
+    --white: #ffffff;
+    --text: #2c3e35;
+    --muted: #6b7c72;
+    --border: #d4e0da;
+  }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: #e8eeeb;
+    color: var(--text);
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    padding: 32px 16px;
+  }
+
+  .page {
+    width: 794px;
+    max-width: 100%;
+    background: var(--white);
+    box-shadow: 0 8px 48px rgba(13,33,55,0.18);
+    position: relative;
+    overflow: hidden;
+  }
+
+  /* ── HEADER ── */
+  .header {
+    background: var(--navy);
+    display: flex;
+    align-items: stretch;
+    gap: 0;
+    position: relative;
+  }
+
+  .header-accent {
+    width: 10px;
+    background: var(--gold);
+    flex-shrink: 0;
+  }
+
+  .header-body {
+    padding: 36px 32px 30px 28px;
+    flex: 1;
+  }
+
+  .header-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    flex-wrap: wrap;
+    gap: 12px;
+  }
+
+  .name-block h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: 38px;
+    font-weight: 900;
+    color: var(--white);
+    letter-spacing: 1px;
+    line-height: 1.1;
+  }
+
+  .name-block .title-tag {
+    margin-top: 6px;
+    display: inline-block;
+    background: var(--gold);
+    color: var(--navy);
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    padding: 4px 14px;
+    border-radius: 2px;
+  }
+
+  .contact-block {
+    text-align: right;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    justify-content: center;
+  }
+
+  .contact-item {
+    display: flex;
+    align-items: center;
+    gap: 7px;
+    justify-content: flex-end;
+    color: #b8ccc5;
+    font-size: 12.5px;
+    font-weight: 400;
+  }
+
+  .contact-item .ico {
+    width: 18px;
+    height: 18px;
+    background: var(--teal);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 9px;
+    color: white;
+    flex-shrink: 0;
+  }
+
+  .header-divider {
+    border: none;
+    border-top: 1px solid rgba(255,255,255,0.1);
+    margin: 20px 0 0;
+  }
+
+  .objective-box {
+    margin-top: 16px;
+    padding: 14px 18px;
+    background: rgba(255,255,255,0.06);
+    border-left: 3px solid var(--gold);
+    border-radius: 0 4px 4px 0;
+  }
+
+  .objective-box p {
+    color: #c8dbd5;
+    font-size: 12.5px;
+    font-weight: 300;
+    line-height: 1.7;
+    font-style: italic;
+  }
+
+  /* ── BODY ── */
+  .body {
+    display: grid;
+    grid-template-columns: 1fr 260px;
+    gap: 0;
+  }
+
+  /* LEFT MAIN */
+  .main {
+    padding: 30px 28px 30px 32px;
+    border-right: 1px solid var(--border);
+  }
+
+  /* RIGHT SIDE */
+  .side {
+    padding: 30px 24px 30px 22px;
+    background: var(--light);
+  }
+
+  /* ── SECTION ── */
+  .section { margin-bottom: 26px; }
+  .section:last-child { margin-bottom: 0; }
+
+  .section-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--navy);
+    text-transform: uppercase;
+    letter-spacing: 2.5px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 14px;
+  }
+
+  .section-title::after {
+    content: '';
+    flex: 1;
+    height: 2px;
+    background: linear-gradient(to right, var(--teal), transparent);
+    border-radius: 2px;
+  }
+
+  /* EXPERIENCE */
+  .exp-item { margin-bottom: 18px; }
+  .exp-item:last-child { margin-bottom: 0; }
+
+  .exp-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 12px;
+    flex-wrap: wrap;
+  }
+
+  .exp-role {
+    font-size: 13.5px;
+    font-weight: 600;
+    color: var(--navy);
+  }
+
+  .exp-period {
+    background: var(--teal);
+    color: white;
+    font-size: 10px;
+    font-weight: 600;
+    padding: 3px 10px;
+    border-radius: 20px;
+    white-space: nowrap;
+    letter-spacing: 0.5px;
+  }
+
+  .exp-org {
+    font-size: 12px;
+    color: var(--teal);
+    font-weight: 500;
+    margin: 3px 0 8px;
+  }
+
+  .exp-bullets { padding-left: 0; list-style: none; }
+
+  .exp-bullets li {
+    font-size: 12px;
+    color: var(--text);
+    line-height: 1.65;
+    padding: 3px 0 3px 16px;
+    position: relative;
+    font-weight: 400;
+  }
+
+  .exp-bullets li::before {
+    content: '▸';
+    position: absolute;
+    left: 0;
+    color: var(--gold);
+    font-size: 10px;
+    top: 4px;
+  }
+
+  /* EDUCATION */
+  .edu-grid { display: flex; flex-direction: column; gap: 10px; }
+
+  .edu-item {
+    display: flex;
+    gap: 12px;
+    align-items: flex-start;
+    padding: 10px 12px;
+    background: var(--light);
+    border-radius: 6px;
+    border-left: 3px solid var(--teal);
+  }
+
+  .edu-badge {
+    background: var(--navy);
+    color: var(--gold);
+    font-size: 9.5px;
+    font-weight: 700;
+    padding: 5px 8px;
+    border-radius: 4px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    white-space: nowrap;
+    min-width: 60px;
+    text-align: center;
+    line-height: 1.3;
+  }
+
+  .edu-details .deg {
+    font-size: 12.5px;
+    font-weight: 600;
+    color: var(--navy);
+  }
+
+  .edu-details .inst {
+    font-size: 11.5px;
+    color: var(--muted);
+    margin-top: 1px;
+  }
+
+  .edu-details .yr {
+    font-size: 11px;
+    color: var(--teal);
+    font-weight: 500;
+    margin-top: 2px;
+  }
+
+  /* SIDE SECTIONS */
+  .side .section-title {
+    font-size: 12px;
+    letter-spacing: 2px;
+  }
+
+  /* SKILLS */
+  .skills-list { display: flex; flex-direction: column; gap: 7px; }
+
+  .skill-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 12px;
+    color: var(--text);
+    font-weight: 400;
+  }
+
+  .skill-dot {
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background: var(--gold);
+    flex-shrink: 0;
+  }
+
+  /* SPORTS */
+  .sports-grid {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 7px;
+  }
+
+  .sport-tag {
+    background: var(--navy);
+    color: var(--white);
+    font-size: 11px;
+    font-weight: 500;
+    padding: 5px 11px;
+    border-radius: 20px;
+    letter-spacing: 0.3px;
+  }
+
+  /* CERTIFICATIONS */
+  .cert-list { display: flex; flex-direction: column; gap: 9px; }
+
+  .cert-item {
+    padding: 9px 12px;
+    background: var(--white);
+    border-radius: 6px;
+    border-left: 3px solid var(--gold);
+    font-size: 11.5px;
+    font-weight: 500;
+    color: var(--navy);
+    line-height: 1.4;
+  }
+
+  /* FOOTER */
+  .footer {
+    background: var(--navy);
+    padding: 10px 32px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .footer p {
+    font-size: 10.5px;
+    color: rgba(255,255,255,0.45);
+    font-style: italic;
+  }
+
+  .footer-line {
+    width: 60px;
+    height: 2px;
+    background: var(--gold);
+    border-radius: 2px;
+  }
+
+  /* PRINT */
+  @media print {
+    body { background: white; padding: 0; }
+    .page { box-shadow: none; width: 100%; }
+  }
+
+  @media (max-width: 650px) {
+    .body { grid-template-columns: 1fr; }
+    .side { border-top: 1px solid var(--border); }
+    .main { padding: 22px 18px; }
+    .side { padding: 22px 18px; }
+    .header-body { padding: 24px 18px 22px; }
+    .name-block h1 { font-size: 28px; }
+    .contact-block { text-align: left; }
+    .contact-item { justify-content: flex-start; }
+    .header-top { flex-direction: column; }
+  }
+</style>
+</head>
+<body>
+<div class="page">
+
+  <!-- HEADER -->
+  <header class="header">
+    <div class="header-accent"></div>
+    <div class="header-body">
+      <div class="header-top">
+        <div class="name-block">
+          <h1>Udhayakumar V</h1>
+          <span class="title-tag">Physical Education Teacher</span>
+        </div>
+        <div class="contact-block">
+          <div class="contact-item">
+            <span>📍 Pondicherry, India</span>
+            <span class="ico">📍</span>
+          </div>
+          <div class="contact-item">
+            <span>6380111059</span>
+            <span class="ico">📞</span>
+          </div>
+          <div class="contact-item">
+            <span>udhayakumar2301@gmail.com</span>
+            <span class="ico">✉</span>
+          </div>
+        </div>
+      </div>
+      <hr class="header-divider"/>
+      <div class="objective-box">
+        <p>A dedicated and passionate Physical Education professional with a strong academic background in sports science and physical training. Committed to nurturing student-athletes through structured fitness programs, skill-based coaching, and values-driven sports education. Seeking a Physical Education Teacher role to contribute positively to school sports development, student wellness, and institutional excellence.</p>
+      </div>
+    </div>
+  </header>
+
+  <!-- BODY -->
+  <div class="body">
+
+    <!-- MAIN LEFT -->
+    <div class="main">
+
+      <!-- EXPERIENCE -->
+      <div class="section">
+        <div class="section-title">Experience</div>
+        <div class="exp-item">
+          <div class="exp-header">
+            <div class="exp-role">Physical Education Teacher Trainee / Assistant Coach</div>
+            <span class="exp-period">Feb 2023 – Feb 2024</span>
+          </div>
+          <div class="exp-org">Shri Hindocha Charitable Trust Higher Secondary School, Ariyur, Puducherry</div>
+          <ul class="exp-bullets">
+            <li>Assisted senior coaches in planning and conducting training sessions for school and college-level sports teams.</li>
+            <li>Led fitness drills, structured warm-ups, and conditioning sessions for student-athletes.</li>
+            <li>Supported comprehensive match preparation and organized practice sessions for competitive events.</li>
+            <li>Implemented Physical Education lesson plans in alignment with curriculum standards for theory and practical sessions.</li>
+            <li>Monitored individual student performance, provided constructive feedback, and maintained progress records.</li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- EDUCATION -->
+      <div class="section">
+        <div class="section-title">Education</div>
+        <div class="edu-grid">
+
+          <div class="edu-item">
+            <div class="edu-badge">M.P.Ed</div>
+            <div class="edu-details">
+              <div class="deg">Master of Physical Education</div>
+              <div class="inst">Pondicherry University, Kalapet, Puducherry</div>
+              <div class="yr">2024 – 2026</div>
+            </div>
+          </div>
+
+          <div class="edu-item">
+            <div class="edu-badge">B.P.Ed</div>
+            <div class="edu-details">
+              <div class="deg">Bachelor of Physical Education</div>
+              <div class="inst">Annamalai University, Chidambaram</div>
+              <div class="yr">2022 – 2024</div>
+            </div>
+          </div>
+
+          <div class="edu-item">
+            <div class="edu-badge">PG Dip Yoga</div>
+            <div class="edu-details">
+              <div class="deg">PG Diploma in Yoga</div>
+              <div class="inst">Annamalai University, Chidambaram</div>
+              <div class="yr">2022 – 2024</div>
+            </div>
+          </div>
+
+          <div class="edu-item">
+            <div class="edu-badge">B.P.E.S</div>
+            <div class="edu-details">
+              <div class="deg">Bachelor of Physical Education & Sports</div>
+              <div class="inst">Annamalai University, Chidambaram</div>
+              <div class="yr">2019 – 2022</div>
+            </div>
+          </div>
+
+          <div class="edu-item">
+            <div class="edu-badge">HSC</div>
+            <div class="edu-details">
+              <div class="deg">Higher Secondary Certificate</div>
+              <div class="inst">SRK Higher Secondary School, Karikalampakkam, Puducherry</div>
+              <div class="yr">2018 – 2019</div>
+            </div>
+          </div>
+
+          <div class="edu-item">
+            <div class="edu-badge">SSLC</div>
+            <div class="edu-details">
+              <div class="deg">Secondary School Leaving Certificate</div>
+              <div class="inst">Shri Hindocha Charitable Trust HSS, Ariyur, Puducherry</div>
+              <div class="yr">2016 – 2017</div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+    </div>
+
+    <!-- SIDE RIGHT -->
+    <div class="side">
+
+      <!-- SKILLS -->
+      <div class="section">
+        <div class="section-title">Skills</div>
+        <div class="skills-list">
+          <div class="skill-item"><span class="skill-dot"></span>College-Level Sports Coaching</div>
+          <div class="skill-item"><span class="skill-dot"></span>Skill Development & Drills</div>
+          <div class="skill-item"><span class="skill-dot"></span>Lesson Planning (Theory & Practical)</div>
+          <div class="skill-item"><span class="skill-dot"></span>Communication & Coordination</div>
+          <div class="skill-item"><span class="skill-dot"></span>Student-Athlete Management</div>
+          <div class="skill-item"><span class="skill-dot"></span>Team Leadership & Motivation</div>
+          <div class="skill-item"><span class="skill-dot"></span>Fitness & Conditioning Training</div>
+          <div class="skill-item"><span class="skill-dot"></span>Sports Event Organization</div>
+          <div class="skill-item"><span class="skill-dot"></span>Performance Assessment</div>
+          <div class="skill-item"><span class="skill-dot"></span>Assistant Coaching Support</div>
+        </div>
+      </div>
+
+      <!-- SPECIALIZATION -->
+      <div class="section">
+        <div class="section-title">Sports Specialization</div>
+        <div class="sports-grid">
+          <span class="sport-tag">🤾 Handball</span>
+          <span class="sport-tag">🏃 Kabaddi</span>
+          <span class="sport-tag">🏅 Kho-Kho</span>
+          <span class="sport-tag">🏃 Athletics</span>
+          <span class="sport-tag">🏏 Cricket</span>
+          <span class="sport-tag">🏐 Volleyball</span>
+        </div>
+      </div>
+
+      <!-- CERTIFICATIONS -->
+      <div class="section">
+        <div class="section-title">Certifications</div>
+        <div class="cert-list">
+          <div class="cert-item">Tamil Nadu State Technical Official — Grade 1</div>
+          <div class="cert-item">State Level Workshop cum Officiating Examination in Handball</div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- FOOTER -->
+  <footer class="footer">
+    <p>All information provided is true to the best of my knowledge.</p>
+    <div class="footer-line"></div>
+    <p>Udhayakumar V</p>
+  </footer>
+
+</div>
+</body>
+</html>
